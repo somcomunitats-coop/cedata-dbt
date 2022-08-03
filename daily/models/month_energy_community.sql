@@ -1,10 +1,7 @@
 {{ config(materialized='table') }}
 
 select
- {{ dbt_utils.surrogate_key(
-      'ts',
-      'community_id'
-  ) }} as id,
+md5(concat(date_trunc('month', ts) ,'-', c.community_id)) as id,
 date_trunc('month', ts) as ts, c.community_id as community_id
 , sum(input_active_energy_kwh) as input_active_energy_kwh
 , sum(output_active_energy_kwh) as output_active_energy_kwh
