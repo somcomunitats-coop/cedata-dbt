@@ -1,6 +1,9 @@
 {{ config(materialized='table') }}
 
-select
+select  {{ dbt_utils.surrogate_key(
+      'ts',
+      'contract_id'
+  ) }} as id,
 date_trunc('month', ts) as ts, c.id as contract_id
 , sum(input_active_energy_kwh) as input_active_energy_kwh
 , sum(output_active_energy_kwh) as output_active_energy_kwh
