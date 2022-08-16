@@ -1,7 +1,7 @@
-{{ config(materialized='incremental', unique_key='comer_contract_id') }}
+{{ config(materialized='incremental', unique_key='comer_contractid') }}
 
 select distinct coalesce(ct.id,row_number() over( order by community)+(select max(id)from community)) as id
-, o.contract as comer_contract_id, o.contract as description
+, o.contract as comer_contractid, o.contract as description
     , coalesce(ct.created_at, current_date) as created_at, coalesce(ct.updated_at, current_Date) as updated_at
     ,case when o.date_end='9999-12-31' then true else false end as is_active, c.id as community_id
 from ods_contract_community o
