@@ -7,6 +7,6 @@ date_trunc('year', ts) as ts, c.community_id as community_id
 , sum(output_active_energy_kwh) as output_active_energy_kwh
 , current_timestamp as created_at, current_timestamp as updated_at
 from ods_curveregistry oc
-join contract c on c.comer_contractid =oc.contract
+join {{ ref('contract') }} c on c.comer_contractid =oc.contract
 where date_trunc('year', ts)>=CURRENT_DATE-5
 group by c.community_id,  date_trunc('year', ts)
