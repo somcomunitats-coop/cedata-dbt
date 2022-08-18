@@ -8,7 +8,7 @@ date_trunc('month', ts) as ts, c.community_id as community_id
 , current_timestamp as created_at, current_timestamp as updated_at
 from ods_curveregistry oc
 join {{ ref('contract') }} c on c.comer_contractid =oc.contract and c.is_active=true
-where date_trunc('month', ts)>=>=(select date_trunc('month', min(ts))
+where date_trunc('month', ts)>=(select date_trunc('month', min(ts))
                                from ods_curveregistry oc
                                where oc.updated_at>=current_date-5)
 group by c.community_id,  date_trunc('month', ts)
