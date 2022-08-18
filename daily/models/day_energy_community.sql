@@ -8,5 +8,5 @@ date_trunc('day', ts) as ts, c.community_id as community_id
 , current_timestamp as created_at, current_timestamp as updated_at
 from ods_curveregistry oc
 join {{ ref('contract') }} c on c.comer_contractid =oc.contract and c.is_active=true
-where ts>=CURRENT_DATE-5
+where (ts>=CURRENT_DATE-5 or oc.updated_at>=current_date-5)
 group by c.community_id,  date_trunc('day', ts)
