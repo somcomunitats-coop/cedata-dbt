@@ -6,4 +6,4 @@ select  coalesce(ct.id,row_number() over( order by ct.id, contract)+(select max(
     ,case when o.date_end='9999-12-31' then true else false end as is_active, c.id as community_id
 from ods_contract_community o
     join {{ref('community')}} c on o.community =c.name
-    left join contract ct on o.contract =ct.comer_contractid and c.id=ct.id
+    left join contract ct on o.contract =ct.comer_contractid and c.id=ct.community_id
