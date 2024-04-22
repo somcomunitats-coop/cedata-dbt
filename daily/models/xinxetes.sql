@@ -15,7 +15,11 @@ select d.data
 	,sum(case when (cmp.completed_percentage < 50.0 and subm.submissions > 0) then 1 else 0 end ) as xinxetes_sumat_sota_50
 	,sum(case when (cmp.completed_percentage >= 50.0 and cmp.completed_percentage < 100.0 and subm.submissions > 0) then 1 else 0 end ) as xinxetes_sumat_50_100
 	,sum(subm.submissions) as persones
-	,sum(subm.submissions) as persones_leaders
+	,sum(subm.leaders) as persones_leaders
+	,sum(subm.low_implication) as low_implication
+	,sum(subm.medium_implication) as medium_implication
+	,sum(subm.high_implication) as high_implication
+	,sum(subm.leadership_implication) as leadership_implication
 from {{ source('dwhpublic', 'data')}} d
 left join {{ source('dwhexternal', 'hist_odoo_cm_place')}} as cmp on d.data>=dt_start and d.data<dt_end
 left join {{ ref('ubicacio_cm_place')}} ub on cmp.id=ub.id
