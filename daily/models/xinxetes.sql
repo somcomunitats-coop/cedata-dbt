@@ -27,6 +27,10 @@ left join (
 	select data, place_id
 	    , sum(submissions) as submissions
 	    , sum(leaders) as leaders
+	    , sum(low_implication) as low_implication
+	    ,sum(medium_implication) as medium_implication
+        ,sum(high_implication) as high_implication
+        ,sum(leadership_implication) as leadership_implication
 	from {{ ref('inm_crm_leads')}}
 	where active
 	    and team_id = 5 -- map Sumbmissions
