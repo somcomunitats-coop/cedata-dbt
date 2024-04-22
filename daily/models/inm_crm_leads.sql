@@ -7,7 +7,7 @@
 
 
 select d.data, place_id, team_id, active, count(id) as submissions, sum(case when is_map_crowdfunding_target then 1 else 0 end) as leaders
-from  {{ source('dwhpublic', 'data')} d
+from  {{ source('dwhpublic', 'data')}} d
     join {{ source('dwhexternal', 'hist_odoo_crm_lead')}} c on d.data>=dt_start and d.data<dt_end
 where d.data<=current_date
 {% if is_incremental() %}
