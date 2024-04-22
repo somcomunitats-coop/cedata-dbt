@@ -1,6 +1,6 @@
 {{ config(materialized='incremental'
  , unique_key='data'
- , post_hook=after_commit('create index IF NOT EXISTS cix_comunitats_obertes on {{ this }} (data); CLUSTER {{ this }} USING cix_comnitats_obertes;')
+ , post_hook=after_commit('create index IF NOT EXISTS cix_comunitats_obertes on {{ this }} (data); CLUSTER {{ this }} USING cix_comunitats_obertes;')
 ) }}
 
 
