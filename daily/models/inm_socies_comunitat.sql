@@ -12,6 +12,7 @@ select d.data, rel.res_company_id as id_community, count(*) as socies
 	    and d.data>=rp.dt_start and d.data<rp.dt_end
 
 where rp.cooperator_register_number is not null
+    and rp.active
     and d.data<=current_date
 
     {% if is_incremental() %}
