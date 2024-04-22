@@ -22,13 +22,13 @@ from {{ source('dwhpublic', 'data')}} d
 left join {{ source('dwhexternal', 'hist_odoo_cm_place')}} as cmp on d.data>=dt_start and d.data<dt_end
 left join {{ ref('ubicacio_cm_place')}} ub on cmp.id=ub.id
 left join (
-	select d.data, place_id
+	select data, place_id
 	    , sum(submissions) as submissions
 	    , sum(leaders) as leaders
 	from {{ ref('inm_crm_leads')}}
 	where active
 	    and team_id = 5 -- map Sumbmissions
-	group by place_id, d.data
+	group by place_id, data
 	) subm on subm.place_id = cmp.id and subm.data=d.data
 where
     cmp.presenter_model_id = 4  -- per activar
