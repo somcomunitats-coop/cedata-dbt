@@ -22,17 +22,17 @@ select d.data
 	,sum(subm.high_implication) as high_implication
 	,sum(subm.leadership_implication) as leadership_implication
 from {{ source('dwhpublic', 'data')}} d
-left join {{ source('dwhexternal', 'hist_odoo_cm_place')}} cmp on d.data>=dt_start and d.data<dt_end
-left join {{ source('dwhexternal', 'hist_odoo_cm_place_category')}} pc on cmp.place_category_id=pc.id and d.data>=dt_start and d.data<dt_end
+left join {{ source('dwhexternal', 'hist_odoo_cm_place')}} cmp on d.data>=cmp.dt_start and d.data<cmp.dt_end
+left join {{ source('dwhexternal', 'hist_odoo_cm_place_category')}} pc on cmp.place_category_id=pc.id and d.data>=pc.dt_start and d.data<pc.dt_end
 left join {{ ref('ubicacio_cm_place')}} ub on cmp.id=ub.id
 left join (
 	select data, place_id
 	    , sum(submissions) as submissions
 	    , sum(leaders) as leaders
 	    , sum(low_implication) as low_implication
-	    ,sum(medium_implication) as medium_implication
-        ,sum(high_implication) as high_implication
-        ,sum(leadership_implication) as leadership_implication
+	    , sum(medium_implication) as medium_implication
+        , sum(high_implication) as high_implication
+        , sum(leadership_implication) as leadership_implication
 	from {{ ref('inm_crm_leads')}}
 	where active
 	    and team_id = 5 -- map Sumbmissions
