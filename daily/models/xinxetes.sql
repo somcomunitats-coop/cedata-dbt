@@ -1,8 +1,6 @@
 {{ config(materialized='incremental'
  , unique_key='data'
  , post_hook=after_commit('create index IF NOT EXISTS cix_xinxetes on {{ this }} (data); CLUSTER {{ this }} USING cix_xinxetes;')
- , schema='inm'
- , docs={'node_color': '#b3b325'}
 ) }}
 
 
