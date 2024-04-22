@@ -7,6 +7,7 @@ sources:
     tables:
       - name: data
       - name: tbl_georef
+      - name: ubicacio_codipostal
   - name: dwhexternal
     database: dwh
     schema: external
