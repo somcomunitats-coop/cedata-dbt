@@ -20,3 +20,4 @@ sources:
       - name: hist_odoo_res_company_res_partner_rel
       - name: hist_odoo_landing_page
       - name: hist_odoo_crm_lead
+      - name: hist_odoo_energy_project_project
