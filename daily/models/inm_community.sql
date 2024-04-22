@@ -13,7 +13,7 @@ select orc.id as id_community, orc.legal_form as community_legal_form, orc.name 
 	, lp.community_type, coalesce(lp.community_status,'') as community_status
 	, d.data
 from {{ source('dwhexternal', 'hist_odoo_res_company')}} orc
-    join {{ source('dwhpublic', 'data')}} d on d.data>=orc.dt_start and d.data<dt_end
+    join {{ source('dwhpublic', 'data')}} d on d.data>=orc.dt_start and d.data<orc.dt_end
     left join {{ source('dwhexternal', 'hist_odoo_landing_page')}} lp on orc.landing_page_id=lp.id and d.data>=lp.dt_start and d.data<lp.dt_end
 where hierarchy_level ='community'
     and orc.name not ilike '%DELETE%'
@@ -31,7 +31,7 @@ select ocp.id*-1, 'N/A', ocp.name, null, null, true, null, null, null
 , d.data
 from data d
 	join  {{ source('dwhexternal', 'hist_odoo_cm_place')}} ocp on d.data>=ocp.dt_start and d.data<ocp.dt_end
-	left join {{ source('dwhexternal', 'hist_odoo_cm_place_category')}} pc on ocp.place_category_id=pc.id and d.data>=dt_start and d.data<dt_end
+	left join {{ source('dwhexternal', 'hist_odoo_cm_place_category')}} pc on ocp.place_category_id=pc.id and d.data>=pc.dt_start and d.data<pc.dt_end
 where not exists
     (
         select *
