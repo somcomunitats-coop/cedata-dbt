@@ -8,6 +8,7 @@ select d.data
     , d.dia_setmana, d.es_primer_dia_mes, d.es_ultim_dia_mes
     , d.es_primer_dia_trimestre, d.es_ultim_dia_trimestre
     , d.es_primer_dia_any, d.es_ultim_dia_any
+    , cmp.name as map_point_name
     , ub.municipi, ub.comarca, ub.provincia, ub.ccaa, ub.codpostal
     , pc.name as name_place_category
 	,count(cmp.id)as xinxetes_sumat
@@ -53,5 +54,6 @@ group by d.data
     , d.dia_setmana, d.es_primer_dia_mes, d.es_ultim_dia_mes
     , d.es_primer_dia_trimestre, d.es_ultim_dia_trimestre
     , d.es_primer_dia_any, d.es_ultim_dia_any
+    , cmp.name
     , ub.municipi, ub.comarca, ub.provincia, ub.ccaa, ub.codpostal
     , pc.name
