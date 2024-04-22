@@ -12,7 +12,7 @@ select orc.id as id_community, orc.legal_form as community_legal_form, orc.name 
 	, orc.parent_id as id_coordinator, orc.partner_id as community_id_partner
 	, lp.community_type, lp.community_status
 	, d.data
-from from {{ source('dwhexternal', 'hist_odoo_res_company')}} orc
+from {{ source('dwhexternal', 'hist_odoo_res_company')}} orc
     join {{ source('dwhpublic', 'data')}} d on d.data>=orc.dt_start and d.data<dt_end
     left join {{ source('dwhexternal', 'hist_odoo_landing_page')}} lp on orc.landing_page_id=lp.id and d.data>=lp.dt_start and d.data<lp.dt_end
 where hierarchy_level ='community'
