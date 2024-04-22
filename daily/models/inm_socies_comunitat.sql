@@ -8,7 +8,8 @@
 select d.data, rel.res_company_id as id_community, count(*) as socies
 	from  {{ source('dwhexternal', 'hist_odoo_res_company_res_partner_rel')}} rel
 	join {{ source('dwhpublic', 'data')}} d on d.data>=rel.dt_start and d.data<rel.dt_end
-	join {{ source('dwhexternal', 'hist_odoo_res_partner')}} rp on rp.id = rel.res_partner_id and rel.data=rp.data
+	join {{ source('dwhexternal', 'hist_odoo_res_partner')}} rp on rp.id = rel.res_partner_id
+	    and d.data>=rp.dt_start and d.data<rp.dt_end
 
 where rp.cooperator_register_number is not null
     and d.data<=current_date
