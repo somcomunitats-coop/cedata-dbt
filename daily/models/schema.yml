@@ -14,6 +14,7 @@ sources:
     tables:
       - name: hist_odoo_cm_form_submission_metadata
       - name: hist_odoo_cm_place
+      - name: hist_odoo_cm_place_category
       - name: hist_odoo_cm_presenter_model
       - name: hist_odoo_crm_lead
       - name: hist_odoo_crm_team

@@ -9,6 +9,7 @@ select d.data
     , d.es_primer_dia_trimestre, d.es_ultim_dia_trimestre
     , d.es_primer_dia_any, d.es_ultim_dia_any
     , ub.municipi, ub.comarca, ub.provincia, ub.ccaa, ub.codpostal
+    , pc.name as name_place_category
 	,count(cmp.id)as xinxetes_sumat
 	,sum(case when (subm.submissions = 0 or subm.submissions is null) then 1 else 0 end) as xinxetes_sumat_sense_persones
 	,sum(case when subm.submissions > 0 then 1 else 0 end) as xinxetes_sumat_amb_persones
@@ -21,7 +22,8 @@ select d.data
 	,sum(subm.high_implication) as high_implication
 	,sum(subm.leadership_implication) as leadership_implication
 from {{ source('dwhpublic', 'data')}} d
-left join {{ source('dwhexternal', 'hist_odoo_cm_place')}} as cmp on d.data>=dt_start and d.data<dt_end
+left join {{ source('dwhexternal', 'hist_odoo_cm_place')}} cmp on d.data>=dt_start and d.data<dt_end
+left join {{ source('dwhexternal', 'hist_odoo_cm_place_category')}} pc on cmp.place_category_id=pc.id and d.data>=dt_start and d.data<dt_end
 left join {{ ref('ubicacio_cm_place')}} ub on cmp.id=ub.id
 left join (
 	select data, place_id
@@ -52,3 +54,4 @@ group by d.data
     , d.es_primer_dia_trimestre, d.es_ultim_dia_trimestre
     , d.es_primer_dia_any, d.es_ultim_dia_any
     , ub.municipi, ub.comarca, ub.provincia, ub.ccaa, ub.codpostal
+    , pc.name
