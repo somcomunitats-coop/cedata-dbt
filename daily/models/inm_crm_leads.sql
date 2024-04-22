@@ -6,7 +6,7 @@
 ) }}
 
 
-select d.data, place_id, team_id, active, count(id) as submissions
+select d.data, place_id, team_id, active, count(*) as submissions
 , sum(case when is_map_crowdfunding_target then 1 else 0 end) as leaders
 , count(case when m.value='low' then 1 end) as low_implication
 , count(case when m.value='medium' then 1 end) as medium_implication
@@ -22,6 +22,6 @@ where d.data<=current_date
 {% if is_incremental() %}
     and d.data>=current_date-5
 {% endif %}
-group by place_id, d.data, team_id, active
+group by place_id, d.data, c.team_id, c.active
 
 
