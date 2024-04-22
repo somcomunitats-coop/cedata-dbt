@@ -13,6 +13,8 @@ select orc.id as id_coordinator, orc.legal_form as coordinator_legal_form, orc.n
 from {{ source('dwhexternal', 'hist_odoo_res_company')}} orc
     join {{ source('dwhpublic', 'data')}} d on d.data>=orc.dt_start and d.data<dt_end
 where hierarchy_level ='coordinator'
+    and orc.name not ilike '%DELETE%'
+    and orc.name not ilike '%Prova%'
     and d.data<=current_date
 
     {% if is_incremental() %}

@@ -16,6 +16,8 @@ from {{ source('dwhexternal', 'hist_odoo_res_company')}} orc
     join {{ source('dwhpublic', 'data')}} d on d.data>=orc.dt_start and d.data<dt_end
     left join {{ source('dwhexternal', 'hist_odoo_landing_page')}} lp on orc.landing_page_id=lp.id and d.data>=lp.dt_start and d.data<lp.dt_end
 where hierarchy_level ='community'
+    and orc.name not ilike '%DELETE%'
+    and orc.name not ilike '%Prova%'
     and d.data<=current_date
 
     {% if is_incremental() %}
