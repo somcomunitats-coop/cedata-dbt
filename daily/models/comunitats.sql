@@ -16,10 +16,10 @@ select d.data, dia_setmana, d.es_primer_dia_mes, d.es_ultim_dia_mes, d.es_primer
 	, s.socies, case when s.socies is not null then true else false end as te_socies
 	, a.pw_autoconsum, a.cnt_autoconsum, case when a.cnt_autoconsum is not null then true else false end as te_autoconsum
 from {{ source('dwhpublic', 'data')}} d
-	left join {{ref('inm_instance')}} i on d.data=i.data
-	left join {{ref('inm_coordinator')}} co on d.data=co.data and co.id_instance=i.id_instance
+	left join {{ref('inm_community')}} c on d.data=c.data
+	left join {{ref('inm_coordinator')}} co on d.data=co.data and co.id_coordinator=c.id_coordinator
+	left join {{ref('inm_instance')}} i on d.data=i.data  and co.id_instance=i.id_instance
 	left join {{ref('inm_partner')}} pc on co.data=pc.data and co.coordinator_id_partner=pc.id_partner
-	left join {{ref('inm_community')}} c on d.data=c.data  and co.id_coordinator=c.id_coordinator
 	left join {{ref('inm_partner')}} p on c.data=p.data and c.community_id_partner=p.id_partner
 	left join (
 		select "postal code" as cp, max("admin name1") as ccaa, max("admin name2") as provincia, max("Nom comarca")  as comarca
