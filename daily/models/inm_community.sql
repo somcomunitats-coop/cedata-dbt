@@ -25,16 +25,19 @@ where hierarchy_level ='community'
     {% endif %}
 
 union all
-select ocp.id*-1, 'N/A', ocp.name, null, null, true, null, null, null, null, 'mapa' as community_status
+select ocp.id*-1, 'N/A', ocp.name, null, null, true, null, null, null
+, pc.name
+, 'mapa' as community_status
 , d.data
 from data d
-	join external.hist_odoo_cm_place ocp on d.data>=ocp.dt_start and d.data<ocp.dt_end
+	join  {{ source('dwhexternal', 'hist_odoo_cm_place')}} ocp on d.data>=ocp.dt_start and d.data<ocp.dt_end
+	left join {{ source('dwhexternal', 'hist_odoo_cm_place_category')}} pc on ocp.place_category_id=pc.id and d.data>=dt_start and d.data<dt_end
 where not exists
     (
         select *
         from data d1
-            join "external".hist_odoo_landing_page lp on d1.data>=lp.dt_start and d1.data<lp.dt_end
-            join external.hist_odoo_res_company orc on lp.company_id=orc.id and d1.data>=orc.dt_start and d1.data<orc.dt_end
+            join {{ source('dwhexternal', 'hist_odoo_landing_page')}} lp on d1.data>=lp.dt_start and d1.data<lp.dt_end
+            join {{ source('dwhexternal', 'hist_odoo_res_company')}} orc on lp.company_id=orc.id and d1.data>=orc.dt_start and d1.data<orc.dt_end
         where lp.map_place_id=ocp.id
             and orc.name not ilike '%DELETE%'
             and orc.name not ilike '%Prova%'
