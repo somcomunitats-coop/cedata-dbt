@@ -10,7 +10,7 @@ select d.data, dia_setmana, d.es_primer_dia_mes, d.es_ultim_dia_mes, d.es_primer
 	, pc.partner_zip as coordinator_zip, pc.partner_city as coordinator_city
 	, pc.ccaa as coordinator_ccaa, pc.provincia as coordinator_provincia, pc.comarca as coordinator_comarca
 	, c.id_community, c.community_name, c.community_email, c.community_legal_form, c.community_create_date
-	, c.completed_percentage as community_completed_percentage
+	, c.completed_pencentage as community_completed_percentage
 	, case when c.allow_new_members then 'Pack 2' when not c.allow_new_members then 'Pack 1' end as community_pack
 	, c.community_type, c.community_status
 	, p.partner_zip as community_zip, p.partner_city as community_city, p.ccaa as community_ccaa, p.provincia as community_provincia, p.comarca as community_comarca
