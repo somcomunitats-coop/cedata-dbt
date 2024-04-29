@@ -13,6 +13,7 @@ select d.data, dia_setmana, d.es_primer_dia_mes, d.es_ultim_dia_mes, d.es_primer
 	, c.completed_percentage as community_completed_percentage
 	, case when c.allow_new_members then 'Pack 2' when not c.allow_new_members then 'Pack 1' end as community_pack
 	, c.community_type, c.community_status
+	, c.community_map_place_id
 	, p.partner_zip as community_zip, p.partner_city as community_city, p.ccaa as community_ccaa, p.provincia as community_provincia, p.comarca as community_comarca
 	, s.socies, case when s.socies is not null then true else false end as te_socies
 	, a.pw_autoconsum, a.cnt_autoconsum, case when a.cnt_autoconsum is not null then true else false end as te_autoconsum

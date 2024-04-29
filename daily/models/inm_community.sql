@@ -12,6 +12,7 @@ select orc.id as id_community, orc.legal_form as community_legal_form, orc.name 
 	, orc.parent_id as id_coordinator, orc.partner_id as community_id_partner
 	, lp.community_type, coalesce(lp.community_status,'') as community_status
 	, coalesce(h.completed_percentage, 100::numeric) as completed_percentage
+	, h.id as community_map_place_id
 	, d.data
 from {{ source('dwhexternal', 'hist_odoo_res_company')}} orc
     join {{ source('dwhpublic', 'data')}} d on d.data>=orc.dt_start and d.data<orc.dt_end
@@ -31,6 +32,7 @@ select ocp.id*-1, 'N/A', ocp.name, null, null, true, null, null, null
 , pc.name
 , 'mapa' as community_status
 , ocp.completed_percentage
+, ocp.id
 , d.data
 from data d
 	join  {{ source('dwhexternal', 'hist_odoo_cm_place')}} ocp on d.data>=ocp.dt_start and d.data<ocp.dt_end
