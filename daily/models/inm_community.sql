@@ -17,7 +17,7 @@ select orc.id as id_community, orc.legal_form as community_legal_form, orc.name 
 from {{ source('dwhexternal', 'hist_odoo_res_company')}} orc
     join {{ source('dwhpublic', 'data')}} d on d.data>=orc.dt_start and d.data<orc.dt_end
     left join {{ source('dwhexternal', 'hist_odoo_landing_page')}} lp on orc.landing_page_id=lp.id and d.data>=lp.dt_start and d.data<lp.dt_end
-    left join {{ source('dwhexternal', 'hist_odoo_cm_place')}} h on lp.map_place_id=h.id
+    left join {{ source('dwhexternal', 'hist_odoo_cm_place')}} h on lp.map_place_id=h.id and d.data>=h.dt_start and d.data<h.dt_end
 where hierarchy_level ='community'
     and orc.name not ilike '%DELETE%'
     and orc.name not ilike '%Prova%'
