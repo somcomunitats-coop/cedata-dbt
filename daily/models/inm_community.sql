@@ -28,7 +28,7 @@ where hierarchy_level ='community'
     {% endif %}
 
 union all
-select ocp.id*-1, 'N/A', ocp.name, null, null, null, null, null, null
+select ocp.id*-1, 'N/A', ocp.name||' - '||ocp.address_txt, null, null, null, null, null, null
 , pc.name
 , 'mapa' as community_status
 , ocp.completed_percentage
