@@ -12,6 +12,7 @@ sources:
     database: dwh
     schema: external
     tables:
+      - name: hist_odoo_account_move
       - name: hist_odoo_cm_form_submission_metadata
       - name: hist_odoo_cm_place
       - name: hist_odoo_cm_place_category
@@ -24,6 +25,7 @@ sources:
       - name: hist_odoo_res_company
       - name: hist_odoo_res_company_res_partner_rel
       - name: hist_odoo_res_partner
+      - name: hist_odoo_subscription_request
 
 
 
