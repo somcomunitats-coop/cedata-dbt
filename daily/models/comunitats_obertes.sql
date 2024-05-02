@@ -4,7 +4,18 @@
 ) }}
 
 
-select *
+select
+    "data", dia_setmana, es_primer_dia_mes, es_ultim_dia_mes, es_primer_dia_trimestre, es_ultim_dia_trimestre
+        , es_primer_dia_any, es_ultim_dia_any
+    , id_instance, instance_name, instance_create_date
+    , id_coordinator, coordinator_name, coordinator_legal_form, coordinator_create_date, coordinator_zip
+        , coordinator_city, coordinator_ccaa, coordinator_provincia, coordinator_comarca
+        , coordinator_sr_amount_untaxed
+    , id_community, community_name, community_email, community_legal_form, community_create_date
+        , community_completed_percentage, community_pack, community_type, community_status, community_map_place_id
+        , community_zip, community_city, community_ccaa, community_provincia, community_comarca
+        , community_sr_amount_untaxed
+    , socies, te_socies, pw_autoconsum, cnt_autoconsum, te_autoconsum
 from {{ref('comunitats')}} d
 where coalesce(community_status, '')<>'mapa'
     and data<=CURRENT_DATE

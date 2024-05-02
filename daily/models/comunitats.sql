@@ -17,6 +17,8 @@ select d.data, dia_setmana, d.es_primer_dia_mes, d.es_ultim_dia_mes, d.es_primer
 	, p.partner_zip as community_zip, p.partner_city as community_city, p.ccaa as community_ccaa, p.provincia as community_provincia, p.comarca as community_comarca
 	, s.socies, case when s.socies is not null then true else false end as te_socies
 	, a.pw_autoconsum, a.cnt_autoconsum, case when a.cnt_autoconsum is not null then true else false end as te_autoconsum
+	, coalesce(crs.sr_amount_untaxed,0) as community_sr_amount_untaxed
+	, coalesce(crsco.sr_amount_untaxed,0) as coordinator_sr_amount_untaxed
 from {{ source('dwhpublic', 'data')}} d
 	left join {{ref('inm_community')}} c on d.data=c.data
 	left join {{ref('inm_coordinator')}} co on d.data=co.data and co.id_coordinator=c.id_coordinator
@@ -30,6 +32,8 @@ from {{ source('dwhpublic', 'data')}} d
 	) ubc on p.partner_zip=ubc.cp
 	left join {{ref('inm_socies_comunitat')}} s on c.data=s.data and c.id_community=s.id_community
 	left join {{ref('inm_projectes_autoconsum_comunitat')}} a on a.data=p.data and c.id_community=a.id_community
+	left join {{ref('inm_company_subscription_request')}} crs on d.data=crs.data and c.id_community=crs.company_id
+	left join {{ref('inm_company_subscription_request')}} crsco on d.data=crsco.data and co.id_coordinator=crsco.company_id
 where d.data<=CURRENT_DATE
     {% if is_incremental() %}
         and d.data>=current_date-5
