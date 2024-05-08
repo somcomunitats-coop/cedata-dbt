@@ -3,7 +3,7 @@
 ) }}
 
 select u.id::int as id, u.municipio as municipi, g.comarca, g.provincia, g.ccaa, u.codpostal
-from  {{ source('dwhpublic', 'ubicacio_codipostal')}} u
+from  {{ ref('ubicacio_calc')}} u
 	left join (
 		select "postal code" as cp, max("admin name1") as ccaa, max("admin name2") as provincia, max("Nom comarca")  as comarca
 		from  {{ source('dwhpublic', 'tbl_georef')}} tg
