@@ -8,6 +8,7 @@ sources:
       - name: data
       - name: tbl_georef
       - name: ubicacio_codipostal
+      - name: odoo_cm_place
   - name: dwhexternal
     database: dwh
     schema: external
@@ -26,7 +27,7 @@ sources:
       - name: hist_odoo_res_company_res_partner_rel
       - name: hist_odoo_res_partner
       - name: hist_odoo_subscription_request
-      - name: odoo_cm_place
+
 
 
 
