@@ -9,6 +9,7 @@ sources:
       - name: tbl_georef
       - name: ubicacio_codipostal
       - name: odoo_cm_place
+      - name: geografia_cp
   - name: dwhexternal
     database: dwh
     schema: external

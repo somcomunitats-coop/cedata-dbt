@@ -15,11 +15,11 @@ select p.id as id_partner, p.name as partner_name, p.create_date as partner_crea
 	, d.data
 from {{ source('dwhexternal', 'hist_odoo_res_partner')}} p
     left join (
-            select "postal code"
-            , max(g."admin name1") as ccaa, max(g."admin name2") as provincia, max(g."Nom comarca") as comarca
-            from  {{ source('dwhpublic', 'tbl_georef')}}  g
+            select cp
+            , max(name_ccaa) as ccaa, max(name_provincia) as provincia, max(name_comarca) as comarca
+            from  {{ source('dwhpublic', 'geografia_cp')}}  g
             group by "postal code"
-        ) g on p.zip=g."postal code"
+        ) g on p.zip=g.cp
     join {{ source('dwhpublic', 'data')}} d on d.data>=p.dt_start and d.data<p.dt_end
 where d.data<=current_date
 
