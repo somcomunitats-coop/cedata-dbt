@@ -8,7 +8,7 @@
 
 
 select p.id as id_partner, p.name as partner_name, p.create_date as partner_create_date, p.parent_id, p.lang as partner_lang, p.active
-	, p.zip as partner_zip, p.city as partner_city, p.email as patner_email, p.is_company, p.commercial_partner_id
+	, p.zip as partner_zip, coalesce(p.city, g.municipi) as partner_city, p.email as patner_email, p.is_company, p.commercial_partner_id
 	, p.cooperator_type, p."member", p.coop_candidate, p.effective_date, p.company_hierarchy_level
 	, p.cooperator_register_number
 	, g.ccaa, g.provincia, g.comarca
@@ -17,6 +17,7 @@ from {{ source('dwhexternal', 'hist_odoo_res_partner')}} p
     left join (
             select cp
             , max(name_ccaa) as ccaa, max(name_provincia) as provincia, max(name_comarca) as comarca
+            , max(name_municipi) as municipi
             from  {{ source('dwhpublic', 'geografia_cp')}}  g
             group by cp
         ) g on p.zip=g.cp
