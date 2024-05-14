@@ -18,7 +18,11 @@ select d.data, dia_setmana, d.es_primer_dia_mes, d.es_ultim_dia_mes, d.es_primer
 	, s.socies, case when s.socies is not null then true else false end as te_socies
 	, a.pw_autoconsum, a.cnt_autoconsum, case when a.cnt_autoconsum is not null then true else false end as te_autoconsum
 	, coalesce(crs.sr_amount_untaxed,0) as community_sr_amount_untaxed
-	, coalesce(crsco.sr_amount_untaxed,0) as coordinator_sr_amount_untaxed
+	, coalesce(crs.sr_amount_untaxed_voluntary,0) as community_sr_amount_untaxed_voluntary
+	, coalesce(crs.sr_amount_untaxed_mandatory,0) as community_sr_amount_untaxed_mandatory
+    , coalesce(crsco.sr_amount_untaxed,0) as coordinator_sr_amount_untaxed
+    , coalesce(crsco.sr_amount_untaxed_voluntary,0) as coordinator_sr_amount_untaxed_voluntary
+	, coalesce(crsco.sr_amount_untaxed_mandatory,0) as coordinator_sr_amount_untaxed_mandatory
 from {{ source('dwhpublic', 'data')}} d
 	left join {{ref('inm_community')}} c on d.data=c.data
 	left join {{ref('inm_coordinator')}} co on d.data=co.data and co.id_coordinator=c.id_coordinator
