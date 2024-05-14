@@ -26,9 +26,10 @@ from {{ source('dwhpublic', 'data')}} d
 	left join {{ref('inm_partner')}} pc on co.data=pc.data and co.coordinator_id_partner=pc.id_partner
 	left join {{ref('inm_partner')}} p on c.data=p.data and c.community_id_partner=p.id_partner
 	left join (
-		select "postal code" as cp, max("admin name1") as ccaa, max("admin name2") as provincia, max("Nom comarca")  as comarca
-		from  {{ source('dwhpublic', 'tbl_georef')}} tg
-		group by "postal code"
+		select cp
+            , max(name_ccaa) as ccaa, max(name_provincia) as provincia, max(name_comarca) as comarca
+            from  {{ source('dwhpublic', 'geografia_cp')}}  g
+            group by cp
 	) ubc on p.partner_zip=ubc.cp
 	left join {{ref('inm_socies_comunitat')}} s on c.data=s.data and c.id_community=s.id_community
 	left join {{ref('inm_projectes_autoconsum_comunitat')}} a on a.data=p.data and c.id_community=a.id_community

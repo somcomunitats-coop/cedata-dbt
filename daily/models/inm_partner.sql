@@ -18,7 +18,7 @@ from {{ source('dwhexternal', 'hist_odoo_res_partner')}} p
             select cp
             , max(name_ccaa) as ccaa, max(name_provincia) as provincia, max(name_comarca) as comarca
             from  {{ source('dwhpublic', 'geografia_cp')}}  g
-            group by "postal code"
+            group by cp
         ) g on p.zip=g.cp
     join {{ source('dwhpublic', 'data')}} d on d.data>=p.dt_start and d.data<p.dt_end
 where d.data<=current_date
