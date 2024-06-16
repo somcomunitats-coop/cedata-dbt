@@ -10,6 +10,11 @@ sources:
       - name: ubicacio_codipostal
       - name: odoo_cm_place
       - name: geografia_cp
+      - name: odoo_energy_project_project
+      - name: odoo_energy_selfconsumption_selfconsumption
+      - name: odoo_res_company
+      - name: odoo_res_company_res_partner_rel
+      - name: odoo_res_partner
   - name: dwhexternal
     database: dwh
     schema: external
