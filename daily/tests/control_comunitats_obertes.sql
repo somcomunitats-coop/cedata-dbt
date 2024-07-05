@@ -13,7 +13,7 @@ from (
 		case when not rc.allow_new_members then 1 else 0 end as pack1,
 		case when amb_socies.socies > 0 then 1 else 0 end as pmbgsocietaria,
 		amb_socies.socies as socies,
-		case when proj_auto.name is not null then 1 else 0 end as projectes_auto,
+		case when proj_auto.projectes_auto is not null then projectes_auto else 0 end as projectes_auto,
 		proj_auto.power as kwn
 	from {{ source('dwhpublic', 'odoo_res_company')}} as rc
 	left join odoo_res_company as rcc on rcc.id = rc.parent_id -- coordinadora
@@ -31,10 +31,11 @@ from (
 		group by rrr.id, rrr.name
 	) as amb_socies on amb_socies.id = rc.id
 	left join ( -- capturem els projectes d'autoconsum en estat de NO esborrany
-		select eprj.company_id, eprj.name, esc.power, eprj.state
+		select eprj.company_id, sum(esc.power) as power, count(*) as projectes_auto
 		from {{ source('dwhpublic', 'odoo_energy_selfconsumption_selfconsumption')}} as esc
 		left join {{ source('dwhpublic', 'odoo_energy_project_project')}} as eprj on esc.project_id = eprj.id
-		where eprj.state <> 'draft' 
+		where eprj.state <> 'draft'
+		group by eprj.company_id
 	) as proj_auto on proj_auto.company_id = rc.id 
 	where rc.hierarchy_level = 'community' and rc.name not ilike '%DELETE%' and rc.name not ilike '%Prova%'
 	order by rc.id
