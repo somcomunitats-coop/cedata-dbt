@@ -22,6 +22,14 @@ select d.data
 	,sum(subm.medium_implication) as medium_implication
 	,sum(subm.high_implication) as high_implication
 	,sum(subm.leadership_implication) as leadership_implication
+	,sum(subm.agregacio_i_flexibilitat_de_la_demanda) as agregacio_i_flexibilitat_de_la_demanda
+    ,sum(subm.formacio_ciutadana) as formacio_ciutadana
+    ,sum(subm.compres_collectives) as compres_collectives
+    ,sum(subm.generacio_renovable_comunitaria) as generacio_renovable_comunitaria
+    ,sum(subm.eficiencia_energetica) as eficiencia_energetica
+    ,sum(subm.subministrament_energia_100perc_renovable) as subministrament_energia_100perc_renovable
+    ,sum(subm.mobilitat_sostenible) as mobilitat_sostenible
+    ,sum(subm.energia_terminca_i_climatitzacio) as energia_terminca_i_climatitzacio
 from {{ source('dwhpublic', 'data')}} d
 left join {{ source('dwhexternal', 'hist_odoo_cm_place')}} cmp on d.data>=cmp.dt_start and d.data<cmp.dt_end
 left join {{ source('dwhexternal', 'hist_odoo_cm_place_category')}} pc on cmp.place_category_id=pc.id and d.data>=pc.dt_start and d.data<pc.dt_end
@@ -34,6 +42,14 @@ left join (
 	    , sum(medium_implication) as medium_implication
         , sum(high_implication) as high_implication
         , sum(leadership_implication) as leadership_implication
+        , sum(agregacio_i_flexibilitat_de_la_demanda) as agregacio_i_flexibilitat_de_la_demanda
+        , sum(formacio_ciutadana) as formacio_ciutadana
+        , sum(compres_collectives) as compres_collectives
+        , sum(generacio_renovable_comunitaria) as generacio_renovable_comunitaria
+        , sum(eficiencia_energetica) as eficiencia_energetica
+        , sum(subministrament_energia_100perc_renovable) as subministrament_energia_100perc_renovable
+        , sum(mobilitat_sostenible) as mobilitat_sostenible
+        , sum(energia_terminca_i_climatitzacio) as energia_terminca_i_climatitzacio
 	from {{ ref('inm_crm_leads')}}
 	where active
 	    and team_id = 5 -- map Sumbmissions
