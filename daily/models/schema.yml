@@ -15,6 +15,7 @@ sources:
       - name: odoo_res_company
       - name: odoo_res_company_res_partner_rel
       - name: odoo_res_partner
+      - name: odoo_cooperative_membership
   - name: dwhexternal
     database: dwh
     schema: external

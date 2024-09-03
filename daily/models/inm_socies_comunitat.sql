@@ -5,20 +5,31 @@
  , docs={'node_color': '#b3b325'}
 ) }}
 
-select d.data, rel.res_company_id as id_community, count(*) as socies
-	from  {{ source('dwhexternal', 'hist_odoo_res_company_res_partner_rel')}} rel
-	join {{ source('dwhpublic', 'data')}} d on d.data>=rel.dt_start and d.data<rel.dt_end
-	join {{ source('dwhexternal', 'hist_odoo_res_partner')}} rp on rp.id = rel.res_partner_id
-	    and d.data>=rp.dt_start and d.data<rp.dt_end
+--
+--select d.data, rel.res_company_id as id_community, count(*) as socies
+--	from  {{ source('dwhexternal', 'hist_odoo_res_company_res_partner_rel')}} rel
+--	join {{ source('dwhpublic', 'data')}} d on d.data>=rel.dt_start and d.data<rel.dt_end
+--	join {{ source('dwhexternal', 'hist_odoo_res_partner')}} rp on rp.id = rel.res_partner_id
+--	    and d.data>=rp.dt_start and d.data<rp.dt_end
+--
+--where rp.cooperator_register_number is not null
+--    and rp.active
+--    and rp.member
+--    and d.data<=current_date
+--
+--    {% if is_incremental() %}
+--    and d.data>=current_date-5
+--    {% endif %}
+--
+--group by d.data, rel.res_company_id
+--
 
-where rp.cooperator_register_number is not null
-    and rp.active
-    and rp.member
-    and d.data<=current_date
-
+select d.data, company_id as id_community, count(*) as socies
+from {{ source('dwhpublic', 'data')}} d
+left join {{ source('dwhpublic', 'odoo_cooperative_membership')}} cm on d.data between cm.effective_date and current_date
+where cm.member is true
     {% if is_incremental() %}
     and d.data>=current_date-5
     {% endif %}
-
-group by d.data, rel.res_company_id
-
+group by d.data, company_id
+order by 1 desc
