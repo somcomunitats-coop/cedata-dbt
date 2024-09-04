@@ -21,13 +21,13 @@ from (
 		select distinct rrr.id, count(rrr.partner_id) as socies, rrr.name
 		from (
 			select rc.id, rc.name, rp.id as partner_id
-			from {{ source('dwhpublic', 'odoo_res_company_res_partner_rel')}} as rel
-			left join {{ source('dwhpublic', 'odoo_res_partner')}} as rp on rp.id = rel.res_partner_id
-			left join {{ source('dwhpublic', 'odoo_res_company')}} as rc on rc.id = rel.res_company_id
-			where 
-			rp.cooperator_register_number is not null and 
-			rp.member and rc.hierarchy_level = 'community' and rp.active and rc.name not ilike '%DELETE%' and rc.name not ilike '%Prova%' 
-		) as rrr
+            from {{ source('dwhpublic', 'odoo_cooperative_membership')}} as rel
+            left join {{ source('dwhpublic', 'odoo_res_partner')}} as rp on rp.id = rel.partner_id
+            left join {{ source('dwhpublic', 'odoo_res_company')}} as rc on rc.id = rel.company_id
+            where
+             rel.member is true
+             and rc.hierarchy_level = 'community' and rp.active and rc.name not ilike '%DELETE%' and rc.name not ilike '%Prova%'
+  		) as rrr
 		group by rrr.id, rrr.name
 	) as amb_socies on amb_socies.id = rc.id
 	left join ( -- capturem els projectes d'autoconsum en estat de NO esborrany
