@@ -26,6 +26,7 @@ from (
             left join {{ source('dwhpublic', 'odoo_res_company')}} as rc on rc.id = rel.company_id
             where
              rel.member is true
+             and rel.effective_date is not null and rel.effective_date<=current_date
              and rc.hierarchy_level = 'community' and rp.active and rc.name not ilike '%DELETE%' and rc.name not ilike '%Prova%'
   		) as rrr
 		group by rrr.id, rrr.name
