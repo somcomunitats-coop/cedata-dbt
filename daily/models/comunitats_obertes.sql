@@ -20,6 +20,7 @@ select
 	, us_servei_gestio_ingressos
 	, us_servei_comptabilitat_integral
 	, us_servei_monitoritzacio_fotovoltaica
+	, cups
 from {{ref('comunitats')}} d
 where coalesce(community_status, '')<>'mapa'
     and data<=CURRENT_DATE
