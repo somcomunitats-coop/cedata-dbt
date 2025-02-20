@@ -7,7 +7,7 @@
 
 with pv_quotes as (
     SELECT d.data, ep.company_id, case when count(*)>0 then true else false end as te_projecte_fv_quotes
-    FROM {{ source('dwhpublic', 'data')}}
+    FROM {{ source('dwhpublic', 'data')}} d
         join {{ source('dwhexternal', 'hist_odoo_energy_project_project')}} ep on d.data>=ep.dt_start and d.data<ep.dt_end
         JOIN {{ source('dwhexternal', 'hist_odoo_energy_selfconsumption_selfconsumption')}} e ON e.project_id = ep.id and d.data>=e.dt_start and d.data<e.dt_end
         JOIN {{ source('dwhpublic', 'odoo_contract_contract')}} c ON c.project_id = ep.id

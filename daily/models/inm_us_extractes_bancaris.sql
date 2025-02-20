@@ -1,6 +1,6 @@
 {{ config(materialized='incremental'
  , unique_key='data'
- , post_hook=after_commit('create index IF NOT EXISTS cix_inm_us_extractes_bancaris on {{ this }} (data, id_community); CLUSTER {{ this }} USING cix_inm_us_extractes_bancaris;')
+ , post_hook=after_commit('create index IF NOT EXISTS cix_inm_us_extractes_bancaris on {{ this }} (data, company_id); CLUSTER {{ this }} USING cix_inm_us_extractes_bancaris;')
  , schema='inm'
  , docs={'node_color': '#b3b325'}
 ) }}
