@@ -12,7 +12,7 @@ left join (
     select company_id, state, date
     from {{ source('dwhpublic', 'odoo_account_bank_statement')}}
     where state in ('posted', 'confirm')
-    ) v on v.create_date<=d."data"
+    ) v on v.date<=d."data"
 where 1=1
     {% if is_incremental() %}
     and d.data>=current_date-5

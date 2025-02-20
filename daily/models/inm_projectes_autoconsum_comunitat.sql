@@ -12,7 +12,7 @@ with pv_quotes as (
         JOIN {{ source('dwhexternal', 'hist_odoo_energy_selfconsumption_selfconsumption')}} e ON e.project_id = ep.id and d.data>=e.dt_start and d.data<e.dt_end
         JOIN {{ source('dwhpublic', 'odoo_contract_contract')}} c ON c.project_id = ep.id
         JOIN {{ source('dwhpublic', 'odoo_contract_line')}} cl ON cl.contract_id = c.id
-        JOIN {{ source('dwhpublic', 'data')}}odoo_account_move_line aml ON aml.contract_line_id = cl.contract_id
+        JOIN {{ source('dwhpublic', 'odoo_account_move_line')}} aml ON aml.contract_line_id = cl.contract_id
         JOIN {{ source('dwhexternal', 'hist_odoo_account_move')}} am ON am.id = aml.move_id  and d.data>=am.dt_start and d.data<am.dt_end
     where ep.state ='active'
     and am.state='posted'

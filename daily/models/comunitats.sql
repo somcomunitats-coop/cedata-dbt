@@ -48,7 +48,7 @@ from {{ source('dwhpublic', 'data')}} d
 	left join {{ref('inm_us_gestio_tributaria')}} dt on d.data=dt.data and c.id_community=dt.company_id
 	left join {{ref('inm_us_amortitzacions')}} amor on d.data=amor.data and c.id_community=amor.company_id
 	left join {{ref('inm_us_extractes_bancaris')}} eb on d.data=eb.data and c.id_community=eb.company_id
-	left join {{ref('inm_us_pagaments_proveidors')}} pp on d.data=pp.data and c.id_community=pp.company_id
+	left join {{ref('inm_us_pagaments_proveidors')}} pp on d.data=pp.data and c.id_community=pp.id_community
 where d.data<=CURRENT_DATE
     {% if is_incremental() %}
         and d.data>=current_date-5

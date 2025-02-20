@@ -1,6 +1,6 @@
 {{ config(materialized='incremental'
  , unique_key='data'
- , post_hook=after_commit('create index IF NOT EXISTS cix_inm_us_gestio_tributaria on {{ this }} (data, id_community); CLUSTER {{ this }} USING cix_inm_us_gestio_tributaria;')
+ , post_hook=after_commit('create index IF NOT EXISTS cix_inm_us_gestio_tributaria on {{ this }} (data, company_id); CLUSTER {{ this }} USING cix_inm_us_gestio_tributaria;')
  , schema='inm'
  , docs={'node_color': '#b3b325'}
 ) }}
