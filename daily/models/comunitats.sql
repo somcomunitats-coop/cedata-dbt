@@ -23,11 +23,11 @@ select d.data, dia_setmana, d.es_primer_dia_mes, d.es_ultim_dia_mes, d.es_primer
     , coalesce(crsco.sr_amount_untaxed,0) as coordinator_sr_amount_untaxed
     , coalesce(crsco.sr_amount_untaxed_voluntary,0) as coordinator_sr_amount_untaxed_voluntary
 	, coalesce(crsco.sr_amount_untaxed_mandatory,0) as coordinator_sr_amount_untaxed_mandatory
-	, case when s.posted_payment or a.cnt_autoconsum_actiu>0 then true else false end as "Ús Servei Gestió"
-	, case when s.posted_paid_payment or a.te_quotes_autoconsum then true else false end as "Ús Servei Gestió (amb ingressos)"
+	, case when s.posted_payment or a.cnt_autoconsum_actiu>0 then true else false end as us_servei_gestio
+	, case when s.posted_paid_payment or a.te_quotes_autoconsum then true else false end as us_servei_gestio_ingressos
 	, case when dt.us_gestio_tributaria or amor.us_amortizacions
-	    or eb.us_extractes_bancaris or pp.pagaments_proveidors then true else false end as "Ús Servei Comptabilitat integral"
-	, case when a.te_projecte_autoconsum_serv_extern then true else false end as "Ús Servei Monitorització Fotovoltaïca"
+	    or eb.us_extractes_bancaris or pp.pagaments_proveidors then true else false end as us_servei_comptabilitat_integral
+	, case when a.te_projecte_autoconsum_serv_extern then true else false end as us_servei_monitoritzacio_fotovoltaica
 	, cups
 from {{ source('dwhpublic', 'data')}} d
 	left join {{ref('inm_community')}} c on d.data=c.data
