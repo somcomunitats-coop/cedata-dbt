@@ -60,5 +60,5 @@ where eprj.state <> 'draft'
     {% if is_incremental() %}
     and d.data>=current_date-5
     {% endif %}
-group by d.data, company_id
+group by d.data, eprj.company_id
 
