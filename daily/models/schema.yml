@@ -10,8 +10,25 @@ sources:
       - name: ubicacio_codipostal
       - name: odoo_cm_place
       - name: geografia_cp
+      - name: odoo_account_move_line
+      - name: odoo_account_account
+      - name: odoo_account_asset
+      - name: odoo_account_bank_statement
+      - name: odoo_account_journal
+      - name: odoo_contract_contract
+      - name: odoo_contract_line
       - name: odoo_energy_project_project
+      - name: odoo_energy_project_service_contract
+      - name: odoo_energy_project_provider
       - name: odoo_energy_selfconsumption_selfconsumption
+      - name: odoo_energy_selfconsumption_supply_point
+      - name: odoo_energy_selfconsumption_supply_point_assignation
+      - name: odoo_l10n_es_aeat_mod111_report
+      - name: odoo_l10n_es_aeat_mod123_report
+      - name: odoo_l10n_es_aeat_mod303_report
+      - name: odoo_l10n_es_aeat_mod347_report
+      - name: odoo_l10n_es_aeat_mod390_report
+      - name: odoo_l10n_es_vat_book
       - name: odoo_res_company
       - name: odoo_res_company_res_partner_rel
       - name: odoo_res_partner
@@ -28,6 +45,8 @@ sources:
       - name: hist_odoo_crm_lead
       - name: hist_odoo_crm_team
       - name: hist_odoo_energy_project_project
+      - name: hist_odoo_energy_project_service_contract
+      - name: hist_odoo_energy_selfconsumption_distribution_table
       - name: hist_odoo_energy_selfconsumption_selfconsumption
       - name: hist_odoo_landing_page
       - name: hist_odoo_res_company

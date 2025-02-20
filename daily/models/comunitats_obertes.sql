@@ -16,6 +16,10 @@ select
         , community_zip, community_city, community_ccaa, community_provincia, community_comarca
         , community_sr_amount_untaxed, community_sr_amount_untaxed_voluntary, community_sr_amount_untaxed_mandatory
     , socies, te_socies, pw_autoconsum, cnt_autoconsum, te_autoconsum
+    , "Ús Servei Gestió"
+	, "Ús Servei Gestió (amb ingressos)"
+	, "Ús Servei Comptabilitat integral"
+	, "Ús Servei Monitorització Fotovoltaïca"
 from {{ref('comunitats')}} d
 where coalesce(community_status, '')<>'mapa'
     and data<=CURRENT_DATE
