@@ -43,7 +43,7 @@ pv_cups as (
     group by d.data, ep.company_id
 )
 select d.data, eprj.company_id as id_community, sum(esc.power) as pw_autoconsum, count(*) as cnt_autoconsum
-, count(case when eprj.state="active" then 1 end) as cnt_autoconsum_actiu
+, count(case when eprj.state='active' then 1 end) as cnt_autoconsum_actiu
 , bool_and(coalesce(te_projecte_fv_quotes, false)) as te_quotes_autoconsum
 , bool_and(coalesce(te_projecte_autoconsum_serv_extern, false)) as te_projecte_autoconsum_serv_extern
 , max(cups) as cups
