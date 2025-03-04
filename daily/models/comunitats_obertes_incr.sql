@@ -15,6 +15,10 @@ select co.*
 	, coalesce(co.community_sr_amount_untaxed_mandatory,0)-coalesce(ca.community_sr_amount_untaxed_mandatory,0) as increment_community_sr_amount_untaxed_mandatory
 	, coalesce(co.socies,0)-coalesce(ca.socies,0) as increment_socies
 	, coalesce(co.cups,0)-coalesce(ca.cups,0) as increment_cups
+	, case when ca.us_servei_gestio is null then 1 when co.us_servei_gestio is null then -1 else 0 end as increment_us_servei_gestio
+	, case when ca.us_servei_gestio_ingressos is null then 1 when co.us_servei_gestio_ingressos is null then -1 else 0 end as increment_us_servei_gestio_ingressos
+	, case when ca.us_servei_comptabilitat_integral is null then 1 when co.us_servei_comptabilitat_integral is null then -1 else 0 end as increment_us_servei_comptabilitat_integral
+	, case when ca.us_servei_monitoritzacio_fotovoltaica is null then 1 when co.us_servei_monitoritzacio_fotovoltaica is null then -1 else 0 end as increment_us_servei_monitoritzacio_fotovoltaica
 from {{ref('comunitats_obertes')}} co
 	full join {{ref('comunitats_obertes')}} ca on co.data=ca.data+1 and co.id_community=ca.id_community
 where co.data<=CURRENT_DATE
