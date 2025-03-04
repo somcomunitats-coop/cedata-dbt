@@ -36,7 +36,7 @@ left join (
         join {{ source('dwhpublic', 'odoo_account_move_line')}} ml on ml.move_id = m.id
         join {{ source('dwhexternal', 'hist_odoo_res_company')}} c on  c.id = m.company_id and ml.product_id = c.voluntary_share_id and d.data>=c.dt_Start and d.data<c.dt_end
     where m.state='posted'
-) m on cm.partner_id=m.partner_id and d.data between m.dt_start and m.dt_end
+) m on cm.partner_id=m.partner_id and d.data = m.data
 where cm.member is true
     {% if is_incremental() %}
     and d.data>=current_date-5
