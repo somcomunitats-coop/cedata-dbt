@@ -30,16 +30,16 @@ select d.data, cm.company_id as id_community, count(distinct cm.partner_id) as s
 from {{ source('dwhpublic', 'data')}} d
 left join {{ source('dwhpublic', 'odoo_cooperative_membership')}} cm on d.data between cm.effective_date and current_date
 left join (
-    select  m.partner_id, d.data, m.state, m.payment_state
+    select  m.partner_id, d.data, m.state, m.payment_state, c.id as company_id
     from {{ source('dwhpublic', 'data')}} d
         join {{ source('dwhexternal', 'hist_odoo_account_move')}} m on d.data>=m.dt_Start and d.data<m.dt_end
         join {{ source('dwhpublic', 'odoo_account_move_line')}} ml on ml.move_id = m.id
         join {{ source('dwhexternal', 'hist_odoo_res_company')}} c on  c.id = m.company_id and ml.product_id = c.voluntary_share_id and d.data>=c.dt_Start and d.data<c.dt_end
     where m.state='posted'
-) m on cm.partner_id=m.partner_id and d.data = m.data
+) m on cm.partner_id=m.partner_id and d.data = m.data and cm.company_id =m.company_id
 where cm.member is true
     {% if is_incremental() %}
     and d.data>=current_date-5
     {% endif %}
-group by d.data, company_id
+group by d.data, cm.company_id
 order by 1 desc
