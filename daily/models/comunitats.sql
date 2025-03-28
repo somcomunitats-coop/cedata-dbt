@@ -28,7 +28,7 @@ select d.data, dia_setmana, d.es_primer_dia_mes, d.es_ultim_dia_mes, d.es_primer
 	, case when dt.us_gestio_tributaria or amor.us_amortizacions
 	    or eb.us_extractes_bancaris or pp.pagaments_proveidors then true else false end as us_servei_comptabilitat_integral
 	, case when a.te_projecte_autoconsum_serv_extern then true else false end as us_servei_monitoritzacio_fotovoltaica
-	, cups
+	, a.cups, a.cups_provider
 from {{ source('dwhpublic', 'data')}} d
 	left join {{ref('inm_community')}} c on d.data=c.data
 	left join {{ref('inm_coordinator')}} co on d.data=co.data and co.id_coordinator=c.id_coordinator

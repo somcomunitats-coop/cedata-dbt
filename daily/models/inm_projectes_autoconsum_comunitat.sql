@@ -30,15 +30,17 @@ pv_serveis_externs as (
     group by d.data, p.company_id
 ),
 pv_cups as (
-    SELECT d.data, ep.company_id, count(sp.code) as cups
+    SELECT d.data, ep.company_id
+    , count(case when epro.id is not null then sp.code end) as cups_provider
+    , count(sp.code) as cups
     FROM {{ source('dwhpublic', 'data')}} d
         join {{ source('dwhexternal', 'hist_odoo_energy_project_project')}} ep on d.data>=ep.dt_start and d.data<ep.dt_end
         JOIN {{ source('dwhexternal', 'hist_odoo_energy_selfconsumption_selfconsumption')}} ess ON ess.project_id = ep.id and d.data>=ess.dt_start and d.data<ess.dt_end
         JOIN {{ source('dwhexternal', 'hist_odoo_energy_selfconsumption_distribution_table')}} edt ON edt.selfconsumption_project_id = ess.id  and d.data>=edt.dt_start and d.data<edt.dt_end
         JOIN {{ source('dwhpublic', 'odoo_energy_selfconsumption_supply_point_assignation')}} spa ON spa.distribution_table_id = edt.id and spa.create_date<d.data
         JOIN {{ source('dwhpublic', 'odoo_energy_selfconsumption_supply_point')}} sp ON sp.id = spa.supply_point_id and sp.create_date<d.data
-        JOIN {{ source('dwhexternal', 'hist_odoo_energy_project_service_contract')}} sc ON sc.project_id= ep.id and d.data>=sc.dt_start and d.data<sc.dt_end
-        JOIN {{ source('dwhpublic', 'odoo_energy_project_provider')}} epro ON sc.provider_id=epro.id
+        left JOIN {{ source('dwhexternal', 'hist_odoo_energy_project_service_contract')}} sc ON sc.project_id= ep.id and d.data>=sc.dt_start and d.data<sc.dt_end
+        left JOIN {{ source('dwhpublic', 'odoo_energy_project_provider')}} epro ON sc.provider_id=epro.id
     WHERE  edt.state = 'active'
     group by d.data, ep.company_id
 )
@@ -47,6 +49,7 @@ select d.data, eprj.company_id as id_community, sum(esc.power) as pw_autoconsum,
 , bool_and(coalesce(te_projecte_fv_quotes, false)) as te_quotes_autoconsum
 , bool_and(coalesce(te_projecte_autoconsum_serv_extern, false)) as te_projecte_autoconsum_serv_extern
 , max(cups) as cups
+, max(cups_provider) as cups_provider
 from  {{ source('dwhexternal', 'hist_odoo_energy_selfconsumption_selfconsumption')}} as esc
     join {{ source('dwhpublic', 'data')}} d on d.data>=esc.dt_start and d.data<esc.dt_end
     join {{ source('dwhexternal', 'hist_odoo_energy_project_project')}} as eprj on esc.project_id = eprj.id
