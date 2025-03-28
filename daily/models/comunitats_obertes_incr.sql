@@ -19,6 +19,7 @@ select co.*
 	, case when ca.us_servei_gestio_ingressos is null then 1 when co.us_servei_gestio_ingressos is null then -1 else 0 end as increment_us_servei_gestio_ingressos
 	, case when ca.us_servei_comptabilitat_integral is null then 1 when co.us_servei_comptabilitat_integral is null then -1 else 0 end as increment_us_servei_comptabilitat_integral
 	, case when ca.us_servei_monitoritzacio_fotovoltaica is null then 1 when co.us_servei_monitoritzacio_fotovoltaica is null then -1 else 0 end as increment_us_servei_monitoritzacio_fotovoltaica
+	, coalesce(co.cups_provider,0)-coalesce(ca.cups_provider,0) as increment_cups_provider
 from {{ref('comunitats_obertes')}} co
 	full join {{ref('comunitats_obertes')}} ca on co.data=ca.data+1 and co.id_community=ca.id_community
 where co.data<=CURRENT_DATE
