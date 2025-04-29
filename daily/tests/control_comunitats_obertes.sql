@@ -1,7 +1,7 @@
 select  
 count(ccee.id) as ccee_total, sum(ccee.pack1) as ccee_pack1, sum(ccee.pack2) as ccee_pack2, 
 sum(ccee.pmbgsocietaria) as ccee_amb_societaria, sum(ccee.socies) as socies,  
-sum(ccee.projectes_auto) as projectes_auto, sum(ccee.kwn) as kwn
+sum(ccee.projectes_auto) as projectes_auto, sum(ccee.kwn)::numeric(9,2) as kwn
 from ( 
 	select
 		rcc.id as coord_id,
@@ -48,6 +48,6 @@ select COUNT(distinct id_community) AS cnt,
        count(distinct case when te_socies then id_community end) AS "Gestió societària",
        sum(socies) AS "Núm sòcies",
        sum(cnt_autoconsum) AS "Projectes autoconsum",
-       sum(pw_autoconsum) AS "Potència autoconsum"
+       sum(pw_autoconsum)::numeric(9,2) AS "Potència autoconsum"
 from {{ ref('comunitats_obertes_incr')}}  co
 where "data"=current_date
