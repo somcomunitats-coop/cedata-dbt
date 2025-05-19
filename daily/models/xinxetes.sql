@@ -30,6 +30,12 @@ select d.data
     ,sum(subm.subministrament_energia_100perc_renovable) as subministrament_energia_100perc_renovable
     ,sum(subm.mobilitat_sostenible) as mobilitat_sostenible
     ,sum(subm.energia_terminca_i_climatitzacio) as energia_terminca_i_climatitzacio
+    ,count(case when cmp.key_submissions_target_reached then 1 end) as grup_motor_potencial
+    ,count(case when cmp.key_group_activated then 1 end) as grup_motor_activat
+    ,sum(case when cmp.key_submissions_target_reached then subm.leaders else 0 end) as persones_leaders_cmp
+    ,sum(case when cmp.key_group_activated then subm.leaders else 0 end) as persones_leaders_cma
+    ,sum(case when cmp.key_submissions_target_reached then subm.submissions else 0 end) as persones__cmp
+    ,sum(case when cmp.key_group_activated then subm.submissions else 0 end) as persones_cma
 from {{ source('dwhpublic', 'data')}} d
 left join {{ source('dwhexternal', 'hist_odoo_cm_place')}} cmp on d.data>=cmp.dt_start and d.data<cmp.dt_end
 left join {{ source('dwhexternal', 'hist_odoo_cm_place_category')}} pc on cmp.place_category_id=pc.id and d.data>=pc.dt_start and d.data<pc.dt_end

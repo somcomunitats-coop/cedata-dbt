@@ -8,7 +8,7 @@
 
 select d.data, place_id, team_id, active, count(*) as submissions
 --, sum(case when is_map_crowdfunding_target then 1 else 0 end) as leaders
-, 0 as leaders
+, count(case when c.is_key_submission then 1 end) as leaders
 , count(case when m.value='low' then 1 end) as low_implication
 , count(case when m.value='medium' then 1 end) as medium_implication
 , count(case when m.value='high' then 1 end) as high_implication
