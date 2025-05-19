@@ -36,6 +36,7 @@ select d.data
     ,sum(case when cmp.key_group_activated then subm.leaders else 0 end) as persones_leaders_cma
     ,sum(case when cmp.key_submissions_target_reached then subm.submissions else 0 end) as persones_cmp
     ,sum(case when cmp.key_group_activated then subm.submissions else 0 end) as persones_cma
+    ,sum(case when (cmp.completed_percentage >= 100.0 subm.submissions > 0) then 1 else 0 end ) as xinxetes_sumat_100_o_mes
 from {{ source('dwhpublic', 'data')}} d
 left join {{ source('dwhexternal', 'hist_odoo_cm_place')}} cmp on d.data>=cmp.dt_start and d.data<cmp.dt_end
 left join {{ source('dwhexternal', 'hist_odoo_cm_place_category')}} pc on cmp.place_category_id=pc.id and d.data>=pc.dt_start and d.data<pc.dt_end
