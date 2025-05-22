@@ -44,7 +44,7 @@ where not exists
         from data d1
             join {{ source('dwhexternal', 'hist_odoo_landing_page')}} lp on d1.data>=lp.dt_start and d1.data<lp.dt_end
             join {{ source('dwhexternal', 'hist_odoo_res_company')}} orc on lp.company_id=orc.id and d1.data>=orc.dt_start and d1.data<orc.dt_end
-        where lp.map_place_id=ocp.id
+        where lp.id=ocp.landing_id
             and orc.name not ilike '%DELETE%'
             and orc.name not ilike '%Prova%'
             and orc.hierarchy_level ='community'
