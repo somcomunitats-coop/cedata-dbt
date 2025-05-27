@@ -6,21 +6,21 @@
 ) }}
 
 
-select d.data, place_id, team_id, active, count(*) as submissions
+select d.data, place_id, team_id, active, count(distinct c.id) as submissions
 --, sum(case when is_map_crowdfunding_target then 1 else 0 end) as leaders
-, count(case when c.is_key_submission then 1 end) as leaders
-, count(case when m.value='low' then 1 end) as low_implication
-, count(case when m.value='medium' then 1 end) as medium_implication
-, count(case when m.value='high' then 1 end) as high_implication
-, count(case when m.value='leadership' then 1 end) as leadership_implication
-, count(case when ma.value='True' then 1 end) as agregacio_i_flexibilitat_de_la_demanda
-, count(case when mc.value='True' then 1 end) as formacio_ciutadana
-, count(case when mco.value='True' then 1 end) as compres_collectives
-, count(case when mcom.value='True' then 1 end) as generacio_renovable_comunitaria
-, count(case when me.value='True' then 1 end) as eficiencia_energetica
-, count(case when mr.value='True' then 1 end) as subministrament_energia_100perc_renovable
-, count(case when ms.value='True' then 1 end) as mobilitat_sostenible
-, count(case when mt.value='True' then 1 end) as energia_terminca_i_climatitzacio
+, count(distinct case when c.is_key_submission then c.id end) as leaders
+, count(distinct case when m.value='low' then c.id end) as low_implication
+, count(distinct case when m.value='medium' then c.id end) as medium_implication
+, count(distinct case when m.value='high' then c.id end) as high_implication
+, count(distinct case when m.value='leadership' then c.id end) as leadership_implication
+, count(distinct case when ma.value='True' then c.id end) as agregacio_i_flexibilitat_de_la_demanda
+, count(distinct case when mc.value='True' then c.id end) as formacio_ciutadana
+, count(distinct case when mco.value='True' then c.id end) as compres_collectives
+, count(distinct case when mcom.value='True' then c.id end) as generacio_renovable_comunitaria
+, count(distinct case when me.value='True' then c.id end) as eficiencia_energetica
+, count(distinct case when mr.value='True' then c.id end) as subministrament_energia_100perc_renovable
+, count(distinct case when ms.value='True' then c.id end) as mobilitat_sostenible
+, count(distinct case when mt.value='True' then c.id end) as energia_terminca_i_climatitzacio
 from  {{ source('dwhpublic', 'data')}} d
     join {{ source('dwhexternal', 'hist_odoo_crm_lead')}} c on d.data>=c.dt_start and d.data<c.dt_end
     left join {{ source('dwhexternal', 'hist_odoo_cm_form_submission_metadata')}} m
