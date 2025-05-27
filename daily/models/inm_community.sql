@@ -19,7 +19,8 @@ from {{ source('dwhexternal', 'hist_odoo_res_company')}} orc
     left join {{ source('dwhexternal', 'hist_odoo_landing_page')}} lp on orc.landing_page_id=lp.id and d.data>=lp.dt_start and d.data<lp.dt_end
     left join {{ source('dwhexternal', 'hist_odoo_cm_place')}} h on lp.id=h.landing_id
         and d.data>=h.dt_start and d.data<h.dt_end
-    left join {{ source('dwhpublic', 'odoo_cm_map')}} m on h.map_id=m.id and m.company_id=orc.id
+    left join {{ source('dwhpublic', 'odoo_cm_map')}} m on h.map_id=m.id
+        and h.map_id=1
 where hierarchy_level ='community'
     and orc.name not ilike '%DELETE%'
     and orc.name not ilike '%Prova%'
