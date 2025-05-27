@@ -9,6 +9,7 @@ sources:
       - name: tbl_georef
       - name: ubicacio_codipostal
       - name: odoo_cm_place
+      - name: odoo_cm_map
       - name: geografia_cp
       - name: odoo_account_move_line
       - name: odoo_account_account
