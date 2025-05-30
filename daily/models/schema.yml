@@ -16,6 +16,7 @@ sources:
       - name: odoo_account_asset
       - name: odoo_account_bank_statement
       - name: odoo_account_journal
+      - name: odoo_cm_map
       - name: odoo_contract_contract
       - name: odoo_contract_line
       - name: odoo_energy_project_project

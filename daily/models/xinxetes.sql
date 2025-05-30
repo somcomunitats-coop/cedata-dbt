@@ -39,10 +39,13 @@ select d.data
     ,sum(case when (cmp.completed_percentage >= 100.0 and subm.submissions > 0) then 1 else 0 end ) as xinxetes_sumat_100_o_mes
     ,sum(case when subm.leaders>0 then 1 end ) as xinxetes_amb_leaders
     ,sum(case when subm.leaders>0 then submissions end ) as persones_en_xinxetes_amb_leaders
+    , m.name as mapa, rp.name as company
 from {{ source('dwhpublic', 'data')}} d
 left join {{ source('dwhexternal', 'hist_odoo_cm_place')}} cmp on d.data>=cmp.dt_start and d.data<cmp.dt_end
 left join {{ source('dwhexternal', 'hist_odoo_cm_place_category')}} pc on cmp.place_category_id=pc.id and d.data>=pc.dt_start and d.data<pc.dt_end
 left join {{ ref('ubicacio_cm_place')}} ub on cmp.id=ub.id
+left join {{ source('dwhpublic', 'odoo_cm_map')}} m on cmp.company_id = m.company_id
+left join {{ source('dwhpublic', 'odoo_res_company')}} rp on m.company_id = rp.id
 left join (
 	select data, place_id
 	    , sum(submissions) as submissions
@@ -82,3 +85,4 @@ group by d.data
     , cmp.name
     , ub.municipi, ub.comarca, ub.provincia, ub.ccaa, ub.codpostal
     , pc.name
+    , m.name, rp.name
