@@ -10,7 +10,7 @@ select orc.id as id_community, orc.legal_form as community_legal_form, orc.name 
 	, orc.comercial_name  as community_comercial_name, orc.email as community_email
 	, orc.allow_new_members, orc.create_date as community_create_date
 	, orc.parent_id as id_coordinator, orc.partner_id as community_id_partner
-	, lp.community_type, coalesce(lp.community_status,'') as community_status
+	, lp.community_type, null as community_status
 	, coalesce(h.completed_percentage, 100::numeric) as completed_percentage
 	, h.id as community_map_place_id
 	, d.data
