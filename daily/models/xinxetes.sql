@@ -64,7 +64,7 @@ left join (
         , sum(energia_terminca_i_climatitzacio) as energia_terminca_i_climatitzacio
 	from {{ ref('inm_crm_leads')}}
 	where active
-	    and team_id = 5 -- map Sumbmissions
+	    --and team_id = 5 -- map Sumbmissions
 	group by place_id, data
 	) subm on subm.place_id = cmp.id and subm.data=d.data
 where 1=1
