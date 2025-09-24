@@ -2,7 +2,7 @@
 {{ config(materialized='table'
 ) }}
 
-select u.id
+select u.id_cm_place as id
     , coalesce(g.municipi, u.municipi) as municipi
     , g.comarca
     , coalesce(g.provincia, u.provincia) as provincia
