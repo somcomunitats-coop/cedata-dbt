@@ -12,7 +12,7 @@ select d.data
     , ub.municipi, ub.comarca, ub.provincia, ub.ccaa, ub.codpostal
     , pc.name as name_place_category
 	,count(case when cmp.presenter_model_id = 4 then cmp.id end)as xinxetes_sumat
-	,sum(case when (cmp.presenter_model_id = 4 and (subm.submissions = 0 or subm.submissions) is null) then 1 else 0 end) as xinxetes_sumat_sense_persones
+	,sum(case when (cmp.presenter_model_id = 4 and (subm.submissions = 0 or subm.submissions is null)) then 1 else 0 end) as xinxetes_sumat_sense_persones
 	,sum(case when cmp.presenter_model_id = 4 and subm.submissions > 0 then 1 else 0 end) as xinxetes_sumat_amb_persones
 	,sum(case when (cmp.presenter_model_id = 4 and cmp.completed_percentage < 50.0 and subm.submissions > 0) then 1 else 0 end ) as xinxetes_sumat_sota_50
 	,sum(case when (cmp.presenter_model_id = 4 and cmp.completed_percentage >= 50.0 and cmp.completed_percentage < 100.0 and subm.submissions > 0) then 1 else 0 end ) as xinxetes_sumat_50_100
