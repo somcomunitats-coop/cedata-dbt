@@ -39,6 +39,7 @@ select d.data
     ,sum(case when (cmp.completed_percentage >= 100.0 and subm.submissions > 0) then 1 else 0 end ) as xinxetes_sumat_100_o_mes
     ,sum(case when subm.leaders>0 then 1 end ) as xinxetes_amb_leaders
     ,sum(case when subm.leaders>0 then submissions end ) as persones_en_xinxetes_amb_leaders
+    ,count(case when cmp.presenter_model_id=7 then 1 end) as ccee_externas
     , m.name as mapa, rp.name as company
 from {{ source('dwhpublic', 'data')}} d
 left join {{ source('dwhexternal', 'hist_odoo_cm_place')}} cmp on d.data>=cmp.dt_start and d.data<cmp.dt_end
