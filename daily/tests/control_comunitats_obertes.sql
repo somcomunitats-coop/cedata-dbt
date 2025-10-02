@@ -27,7 +27,7 @@ from (
             where
              rel.member is true
              and rel.effective_date is not null and rel.effective_date<=current_date
-             and rc.hierarchy_level = 'community' and rp.active and rc.name not ilike '%DELETE%' and rc.name not ilike '%Prova%'
+             and rc.hierarchy_level = 'community' and rp.active and rc.name not ilike '%DELETE%'  and rc.name not ilike '%ON-HOLD%' and rc.name not ilike '%Prova%'
   		) as rrr
 		group by rrr.id, rrr.name
 	) as amb_socies on amb_socies.id = rc.id
@@ -38,7 +38,7 @@ from (
 		where eprj.state <> 'draft'
 		group by eprj.company_id
 	) as proj_auto on proj_auto.company_id = rc.id 
-	where rc.hierarchy_level = 'community' and rc.name not ilike '%DELETE%' and rc.name not ilike '%Prova%'
+	where rc.hierarchy_level = 'community' and rc.name not ilike '%DELETE%'  and rc.name not ilike '%ON-HOLD%' and rc.name not ilike '%Prova%'
 	order by rc.id
 ) as ccee
 except

@@ -16,6 +16,7 @@ from {{ source('dwhexternal', 'hist_odoo_res_company')}} orc
     left join {{ source('dwhexternal', 'hist_odoo_landing_page')}} lp on orc.landing_page_id=lp.id and d.data>=lp.dt_start and d.data<lp.dt_end
 where hierarchy_level ='coordinator'
     and orc.name not ilike '%DELETE%'
+    and orc.name not ilike '%ON-HOLD%'
     and orc.name not ilike '%Prova%'
     and d.data<=current_date
 

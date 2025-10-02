@@ -23,6 +23,7 @@ from {{ source('dwhexternal', 'hist_odoo_res_company')}} orc
         and h.map_id=1
 where hierarchy_level ='community'
     and orc.name not ilike '%DELETE%'
+    and orc.name not ilike '%ON-HOLD%'
     and orc.name not ilike '%Prova%'
     and d.data<=current_date
 
@@ -48,6 +49,7 @@ where not exists
             join {{ source('dwhexternal', 'hist_odoo_res_company')}} orc on lp.company_id=orc.id and d1.data>=orc.dt_start and d1.data<orc.dt_end
         where lp.id=ocp.landing_id
             and orc.name not ilike '%DELETE%'
+            and orc.name not ilike '%ON-HOLD%'
             and orc.name not ilike '%Prova%'
             and orc.hierarchy_level ='community'
 	)
