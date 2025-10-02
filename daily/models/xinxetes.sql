@@ -69,7 +69,7 @@ left join (
 	group by place_id, data
 	) subm on subm.place_id = cmp.id and subm.data=d.data
 where 1=1
-    and cmp.presenter_model_id = 4  -- per activar
+    --and cmp.presenter_model_id = 4  -- per activar 20251002
     --and cmp.company_id = 1 -- instancia
     and cmp.status = 'published'
     and cmp.active
