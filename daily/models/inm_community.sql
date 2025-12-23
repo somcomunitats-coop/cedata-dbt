@@ -21,6 +21,7 @@ from {{ source('dwhexternal', 'hist_odoo_res_company')}} orc
         and d.data>=h.dt_start and d.data<h.dt_end
     --left join {{ source('dwhpublic', 'odoo_cm_map')}} m on h.map_id=m.id
         and h.map_id=1
+        and h.active
 where hierarchy_level ='community'
     and orc.name not ilike '%DELETE%'
     and orc.name not ilike '%ON-HOLD%'
