@@ -21,6 +21,8 @@ select
 	, us_servei_comptabilitat_integral
 	, us_servei_monitoritzacio_fotovoltaica
 	, cups, cups_provider
+	, us_servei_gestio_model_autoconsum, us_servei_gestio_ingressos_societaris_adicionals
+	, participantes_invitados, participantes_totales, participantes_totales_gt_100
 from {{ref('comunitats')}} d
 where coalesce(community_status, '')<>'mapa'
     and data<=CURRENT_DATE
