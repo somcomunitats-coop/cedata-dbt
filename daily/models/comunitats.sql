@@ -25,10 +25,15 @@ select d.data, dia_setmana, d.es_primer_dia_mes, d.es_ultim_dia_mes, d.es_primer
 	, coalesce(crsco.sr_amount_untaxed_mandatory,0) as coordinator_sr_amount_untaxed_mandatory
 	, case when s.posted_payment or a.cnt_autoconsum_actiu>0 then true else false end as us_servei_gestio
 	, case when s.posted_paid_payment or a.te_quotes_autoconsum then true else false end as us_servei_gestio_ingressos
+	, case when a.te_quotes_autoconsum then true else false end as us_servei_gestio_model_autoconsum
+	, case when s.posted_paid_payment then true else false end as us_servei_gestio_ingressos_societaris_adicionals
 	, case when dt.us_gestio_tributaria or amor.us_amortizacions
 	    or eb.us_extractes_bancaris or pp.pagaments_proveidors then true else false end as us_servei_comptabilitat_integral
 	, case when a.te_projecte_autoconsum_serv_extern then true else false end as us_servei_monitoritzacio_fotovoltaica
 	, a.cups, a.cups_provider
+	, coalesce(con.participantes_invitados,0) as participantes_invitados
+	, coalesce(s.socies,0)+coalesce(con.participantes_invitados,0) as participantes_totales
+	, case when coalesce(s.socies,0)+coalesce(con.participantes_invitados,0)<=100 then 0 else 1 end participantes_totales_gt_100
 from {{ source('dwhpublic', 'data')}} d
 	left join {{ref('inm_community')}} c on d.data=c.data
 	left join {{ref('inm_coordinator')}} co on d.data=co.data and co.id_coordinator=c.id_coordinator
@@ -49,6 +54,7 @@ from {{ source('dwhpublic', 'data')}} d
 	left join {{ref('inm_us_amortitzacions')}} amor on d.data=amor.data and c.id_community=amor.company_id
 	left join {{ref('inm_us_extractes_bancaris')}} eb on d.data=eb.data and c.id_community=eb.company_id
 	left join {{ref('inm_us_pagaments_proveidors')}} pp on d.data=pp.data and c.id_community=pp.id_community
+	left join {{ref('inm_convidades_comunitat')}} con on c.data=con.data and c.id_community=con.id_community
 where d.data<=CURRENT_DATE
     {% if is_incremental() %}
         and d.data>=current_date-5

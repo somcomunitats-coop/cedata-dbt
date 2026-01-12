@@ -16,6 +16,7 @@ join {{ source('dwhexternal', 'hist_odoo_res_partner')}}  as rp on rp.id = subst
 where ip.res_id is not null
 and irmf.model = 'res.partner' and irmf.name = 'no_member_autorized_in_energy_actions'
 and rp.active
+     and data<=CURRENT_DATE
     {% if is_incremental() %}
     and d.data>=current_date-5
     {% endif %}
