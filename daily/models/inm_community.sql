@@ -61,6 +61,7 @@ where not exists
     {% endif %}
 
 -- afegim també les coordinadores com a comunitat
+union all
 select orc.id as id_coordinator, orc.legal_form as coordinator_legal_form, 'Coord. '||orc.name as coordinator_name
 , orc.comercial_name  as coordinator_comercial_name, orc.email as coordinator_email
 , orc.create_date as coordinator_create_date
