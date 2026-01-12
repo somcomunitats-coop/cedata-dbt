@@ -65,7 +65,7 @@ union all
 select orc.id as id_coordinator, orc.legal_form as coordinator_legal_form, 'Coord. '||orc.name as coordinator_name
 , orc.comercial_name  as coordinator_comercial_name, orc.email as coordinator_email
 , orc.allow_new_members, orc.create_date as coordinator_create_date
-, orc.id as id_coordinator, orc.id as community_id_partner
+, orc.id as id_coordinator, orc.partner_id as community_id_partner
 , lp.community_type, null as community_status
 , null as completed_percentage, null as community_map_place_id
 , d.data
