@@ -24,6 +24,8 @@ sources:
       - name: odoo_energy_selfconsumption_selfconsumption
       - name: odoo_energy_selfconsumption_supply_point
       - name: odoo_energy_selfconsumption_supply_point_assignation
+      - name: odoo_ir_property
+      - name: odoo_ir_model_fields
       - name: odoo_l10n_es_aeat_mod111_report
       - name: odoo_l10n_es_aeat_mod123_report
       - name: odoo_l10n_es_aeat_mod303_report
