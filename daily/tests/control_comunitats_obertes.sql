@@ -51,3 +51,4 @@ select COUNT(distinct id_community) AS cnt,
        sum(pw_autoconsum)::numeric(9,2) AS "Potència autoconsum"
 from {{ ref('comunitats_obertes_incr')}}  co
 where "data"=current_date
+and community_name not like 'Coord.%'
