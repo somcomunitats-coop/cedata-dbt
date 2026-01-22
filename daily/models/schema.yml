@@ -36,6 +36,10 @@ sources:
       - name: odoo_res_company_res_partner_rel
       - name: odoo_res_partner
       - name: odoo_cooperative_membership
+      - name: odoo_product_product
+      - name: odoo_ir_model_data
+      - name: odoo_product_category
+      - name: odoo_product_template
   - name: dwhexternal
     database: dwh
     schema: external

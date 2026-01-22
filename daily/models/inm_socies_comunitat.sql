@@ -34,8 +34,13 @@ left join (
     from {{ source('dwhpublic', 'data')}} d
         join {{ source('dwhexternal', 'hist_odoo_account_move')}} m on d.data>=m.dt_Start and d.data<m.dt_end
         join {{ source('dwhpublic', 'odoo_account_move_line')}} ml on ml.move_id = m.id
-        join {{ source('dwhexternal', 'hist_odoo_res_company')}} c on  c.id = m.company_id and ml.product_id = c.voluntary_share_id and d.data>=c.dt_Start and d.data<c.dt_end
+        join {{ source('dwhpublic', 'odoo_product_product')}} opp on ml.product_id = opp.id
+        join {{ source('dwhpublic', 'odoo_product_template')}} as pt on pt.id = pp.product_tmpl_id
+        join {{ source('dwhpublic', 'odoo_product_category')}} as pc on pc.id = pt.categ_id
+        join {{ source('dwhpublic', 'odoo_ir_model_data')}} d on pc.id=d.res_id
+        join {{ source('dwhexternal', 'hist_odoo_res_company')}} c on  c.id = m.company_id and d.data>=c.dt_Start and d.data<c.dt_end
     where m.state='posted'
+        and d.name = 'product_category_company_voluntary_share'
 ) m on cm.partner_id=m.partner_id and d.data = m.data and cm.company_id =m.company_id
 where cm.member is true
     {% if is_incremental() %}
