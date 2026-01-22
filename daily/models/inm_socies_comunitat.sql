@@ -35,7 +35,7 @@ left join (
         join {{ source('dwhexternal', 'hist_odoo_account_move')}} m on d.data>=m.dt_Start and d.data<m.dt_end
         join {{ source('dwhpublic', 'odoo_account_move_line')}} ml on ml.move_id = m.id
         join {{ source('dwhpublic', 'odoo_product_product')}} opp on ml.product_id = opp.id
-        join {{ source('dwhpublic', 'odoo_product_template')}} as pt on pt.id = pp.product_tmpl_id
+        join {{ source('dwhpublic', 'odoo_product_template')}} as pt on pt.id = opp.product_tmpl_id
         join {{ source('dwhpublic', 'odoo_product_category')}} as pc on pc.id = pt.categ_id
         join {{ source('dwhpublic', 'odoo_ir_model_data')}} d on pc.id=d.res_id
         join {{ source('dwhexternal', 'hist_odoo_res_company')}} c on  c.id = m.company_id and d.data>=c.dt_Start and d.data<c.dt_end
