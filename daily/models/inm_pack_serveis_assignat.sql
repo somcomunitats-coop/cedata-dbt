@@ -1,5 +1,5 @@
 {{ config(materialized='table'
- , post_hook=after_commit('create index IF NOT EXISTS cix_{{ this.table }} on {{ this }} (data, company_id); CLUSTER {{ this }} USING cix_{{ this.table }};')
+ , post_hook=after_commit('create index IF NOT EXISTS cix_{{ this.table }} on {{ this }} (date_start, date_end, community_company_id); CLUSTER {{ this }} USING cix_{{ this.table }};')
  , schema='inm'
  , docs={'node_color': '#b3b325'}
 ) }}
