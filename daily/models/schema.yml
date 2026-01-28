@@ -6,40 +6,41 @@ sources:
     schema: public
     tables:
       - name: data
-      - name: tbl_georef
-      - name: ubicacio_codipostal
-      - name: odoo_cm_place
-      - name: odoo_cm_map
       - name: geografia_cp
-      - name: odoo_account_move_line
       - name: odoo_account_account
       - name: odoo_account_asset
       - name: odoo_account_bank_statement
       - name: odoo_account_journal
+      - name: odoo_account_move_line
+      - name: odoo_cm_map
+      - name: odoo_cm_place
       - name: odoo_contract_contract
       - name: odoo_contract_line
+      - name: odoo_cooperative_membership
       - name: odoo_energy_project_project
-      - name: odoo_energy_project_service_contract
       - name: odoo_energy_project_provider
+      - name: odoo_energy_project_service_contract
       - name: odoo_energy_selfconsumption_selfconsumption
       - name: odoo_energy_selfconsumption_supply_point
       - name: odoo_energy_selfconsumption_supply_point_assignation
-      - name: odoo_ir_property
+      - name: odoo_ir_model_data
       - name: odoo_ir_model_fields
+      - name: odoo_ir_property
       - name: odoo_l10n_es_aeat_mod111_report
       - name: odoo_l10n_es_aeat_mod123_report
       - name: odoo_l10n_es_aeat_mod303_report
       - name: odoo_l10n_es_aeat_mod347_report
       - name: odoo_l10n_es_aeat_mod390_report
       - name: odoo_l10n_es_vat_book
+      - name: odoo_product_category
+      - name: odoo_product_product
+      - name: odoo_product_template
       - name: odoo_res_company
       - name: odoo_res_company_res_partner_rel
       - name: odoo_res_partner
-      - name: odoo_cooperative_membership
-      - name: odoo_product_product
-      - name: odoo_ir_model_data
-      - name: odoo_product_category
-      - name: odoo_product_template
+      - name: odoo_sale_order_line
+      - name: tbl_georef
+      - name: ubicacio_codipostal
   - name: dwhexternal
     database: dwh
     schema: external
