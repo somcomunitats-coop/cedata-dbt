@@ -34,6 +34,7 @@ select d.data, dia_setmana, d.es_primer_dia_mes, d.es_ultim_dia_mes, d.es_primer
 	, coalesce(con.participantes_invitados,0) as participantes_invitados
 	, coalesce(s.socies,0)+coalesce(con.participantes_invitados,0) as participantes_totales
 	, case when coalesce(s.socies,0)+coalesce(con.participantes_invitados,0)<=100 then 0 else 1 end participantes_totales_gt_100
+	, psa.status as pack_serveis_assignat_current_status, psa.pack_servicios
 from {{ source('dwhpublic', 'data')}} d
 	left join {{ref('inm_community')}} c on d.data=c.data
 	left join {{ref('inm_coordinator')}} co on d.data=co.data and co.id_coordinator=c.id_coordinator
@@ -55,6 +56,7 @@ from {{ source('dwhpublic', 'data')}} d
 	left join {{ref('inm_us_extractes_bancaris')}} eb on d.data=eb.data and c.id_community=eb.company_id
 	left join {{ref('inm_us_pagaments_proveidors')}} pp on d.data=pp.data and c.id_community=pp.id_community
 	left join {{ref('inm_convidades_comunitat')}} con on c.data=con.data and c.id_community=con.id_community
+	left join {{ref('inm_pack_serveis_assignat')}} psa on c.data>psa.date_start and c.data<psa.date_end and c.id_community=psa.community_company_id
 where d.data<=CURRENT_DATE
     {% if is_incremental() %}
         and d.data>=current_date-5
