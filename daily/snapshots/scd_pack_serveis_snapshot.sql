@@ -1,14 +1,24 @@
 {% snapshot scd_pack_serveis_snapshot %}
 
+{{
+    config(
+      target_schema = 'external_snapshots',
+      unique_key = 'contract_id',
+      strategy = 'check',
+      check_cols = 'all'
+    )
+}}
+
+
 select cc.id as contract_id
     , cc.community_company_id
     , cc.status
     , pt.default_code as pack_servicios
-	, cc.date_start
-	, coalesce(cc.date_end, '9999-12-31') as date_end
-	, cc.successor_contract_id
-	, cc.create_date
-	, row_number() over( partition by cc.community_company_id, cc.date_start order by cc.create_date desc) as rn
+        , cc.date_start
+        , coalesce(cc.date_end, '9999-12-31') as date_end
+        , cc.successor_contract_id
+        , cc.create_date
+        , row_number() over( partition by cc.community_company_id, cc.date_start order by cc.create_date desc) as rn
 from {{ source('dwhpublic', 'odoo_contract_contract')}} as cc
 join {{ source('dwhpublic', 'odoo_res_company')}} as rc on rc.id = cc.company_id
 join {{ source('dwhpublic', 'odoo_sale_order_line')}} sol on sol.id = cc.sale_order_id and product_id is not null
@@ -22,3 +32,4 @@ where
 
 
 {% endsnapshot %}
+~

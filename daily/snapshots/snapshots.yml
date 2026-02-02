@@ -1,4 +1,4 @@
-
+version: 2
 snapshots:
   - name: scd_pack_serveis_snapshot
     description: "Dels contractes de pack de serveis."
