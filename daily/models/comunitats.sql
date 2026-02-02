@@ -56,7 +56,12 @@ from {{ source('dwhpublic', 'data')}} d
 	left join {{ref('inm_us_extractes_bancaris')}} eb on d.data=eb.data and c.id_community=eb.company_id
 	left join {{ref('inm_us_pagaments_proveidors')}} pp on d.data=pp.data and c.id_community=pp.id_community
 	left join {{ref('inm_convidades_comunitat')}} con on c.data=con.data and c.id_community=con.id_community
-	left join {{ref('inm_pack_serveis_assignat')}} psa on c.data>psa.date_start and c.data<psa.date_end and c.id_community=psa.community_company_id
+	--left join {{ref('inm_pack_serveis_assignat')}} psa on c.data>psa.date_start and c.data<psa.date_end and c.id_community=psa.community_company_id
+	left join {{ref('scd_pack_serveis_snapshot')}} psa on
+	    c.data>psa.dbt_valid_from
+	    and c.data<coalesce(psa.dbt_valid_to,'99991231')
+	    and c.id_community=psa.community_company_id
+	    and psa.rn=1 and psa.successor_contract_id is null
 where d.data<=CURRENT_DATE
     {% if is_incremental() %}
         and d.data>=current_date-5
