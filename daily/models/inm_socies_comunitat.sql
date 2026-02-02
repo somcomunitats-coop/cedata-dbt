@@ -40,6 +40,7 @@ left join (
         join {{ source('dwhpublic', 'odoo_ir_model_data')}} da on pc.id=da.res_id
         join {{ source('dwhexternal', 'hist_odoo_res_company')}} c on  c.id = m.company_id and d.data>=c.dt_Start and d.data<c.dt_end
     where m.state='posted'
+        and c.create_date<=m.invoice_date -- només aquelles factures amb data de factura posterior a la data de creació de la company
         and da.name = 'product_category_company_voluntary_share'
 ) m on cm.partner_id=m.partner_id and d.data = m.data and cm.company_id =m.company_id
 where cm.member is true

@@ -1,0 +1,11 @@
+
+snapshots:
+  - name: scd_pack_serveis_snapshot
+    description: "Dels contractes de pack de serveis."
+    config:
+      schema: snapshots
+      unique_key: contract_id
+      strategy: check
+      hard_deletes: invalidate
+      check_cols: all
+
