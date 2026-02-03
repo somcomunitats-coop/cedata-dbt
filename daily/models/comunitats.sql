@@ -65,7 +65,7 @@ from {{ source('dwhpublic', 'data')}} d
 	    )
 	    psa on
 	    c.data>=psa.dbt_valid_from
-	    and c.data<coalesce(psa.dbt_valid_to,'99991231')
+	    and c.data<=coalesce(psa.dbt_valid_to,'99991231')
 	    and c.id_community=psa.community_company_id
 	    and psa.rn=1
 	    and psa.successor_contract_id is null
