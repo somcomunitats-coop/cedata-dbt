@@ -57,13 +57,45 @@ from {{ source('dwhpublic', 'data')}} d
 	left join {{ref('inm_us_pagaments_proveidors')}} pp on d.data=pp.data and c.id_community=pp.id_community
 	left join {{ref('inm_convidades_comunitat')}} con on c.data=con.data and c.id_community=con.id_community
 	--left join {{ref('inm_pack_serveis_assignat')}} psa on c.data>psa.date_start and c.data<psa.date_end and c.id_community=psa.community_company_id
-	left join {{ref('scd_pack_serveis_snapshot')}} psa on
-	    c.data>psa.dbt_valid_from
+	left join (
+	    select * from {{ref('scd_pack_serveis_snapshot')}}
+	    UNION ALL
+	    -- dades de gener-26 estàtiques
+	    select * from external_snapshots.scd_pack_serveis_snapshot_20260101_20261231
+	    )
+	    psa on
+	    c.data>=psa.dbt_valid_from
 	    and c.data<coalesce(psa.dbt_valid_to,'99991231')
 	    and c.id_community=psa.community_company_id
-	    and psa.rn=1 and psa.successor_contract_id is null
+	    and psa.rn=1
+	    and psa.successor_contract_id is null
 where d.data<=CURRENT_DATE
     {% if is_incremental() %}
         and d.data>=current_date-5
     {% endif %}
 
+
+
+--drop  table  external_snapshots.scd_pack_serveis_snapshot_20260101_20261231;
+--create table  external_snapshots.scd_pack_serveis_snapshot_20260101_20261231 as
+--select cc.id as contract_id, cc.community_company_id, cc.status, pt.default_code as pack_servicios
+--	, cc.date_start, coalesce(cc.date_end, '9999-12-31') as date_end
+--	, null as successor_contract_id
+--	, cc.create_date
+--	, 1 as rn
+--	, null as dbt_scd_id
+--	, current_date as dbt_updated_at
+--	, cc.date_start as dbt_valid_from
+--	, cc.date_end as dbt_valid_to
+--from odoo_contract_contract as cc
+--left join odoo_res_company as rc on rc.id = cc.company_id
+--join odoo_sale_order_line sol on sol.id = cc.sale_order_id and product_id is not null
+--left join odoo_product_product as pp on pp.id = sol.product_id
+--left join odoo_product_template as pt on pt.id = pp.product_tmpl_id
+--where
+--cc.community_company_id is not null
+--and rc.hierarchy_level ='instance' -- els contractes de packs de serveis de tarifes sempre estan a nivell de la companyia de la instancia
+--and cc.pack_type = 'platform_pack'
+--and cc.date_end='20260131'
+--and cc.date_start<cc.date_end
+--order by cc.community_company_id
