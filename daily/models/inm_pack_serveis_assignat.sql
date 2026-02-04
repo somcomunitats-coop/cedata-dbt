@@ -11,8 +11,6 @@ select cc.id as contract_id, cc.community_company_id, cc.status, pt.default_code
 	, 1
 	, null
 	, current_date
-	, cc.date_start
-	, cc.date_end
 from {{ source('dwhpublic', 'odoo_contract_contract')}} as cc
     join {{ source('dwhpublic', 'odoo_res_company')}} as rc on rc.id = cc.company_id
     join {{ source('dwhpublic', 'odoo_sale_order_line')}} sol on sol.id = cc.sale_order_id and product_id is not null
