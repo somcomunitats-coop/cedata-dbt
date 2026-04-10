@@ -3,7 +3,30 @@
  , post_hook=after_commit('create index IF NOT EXISTS cix_comunitats on {{ this }} (data); CLUSTER {{ this }} USING cix_comunitats;')
 ) }}
 
-
+with scd_pack_serveis_snapshot as (
+    select * from {{ref('scd_pack_serveis_snapshot')}}
+	UNION ALL
+	-- dades de gener-26 estàtiques
+	select * from external_snapshots.scd_pack_serveis_snapshot_20260101_20261231
+)
+, scd_pack_serveis_snapshot_data as (
+    select d.data, psa.status, psa.pack_servicios, psa.community_company_id
+	, row_number() over(partition by psa.community_company_id, data
+		order by
+			case status
+				when 'in_progress' then 1
+				when 'paused' then 2
+				when 'closed' then 3
+				when 'closed_planned' then 4
+			end) as rn
+    from scd_pack_serveis_snapshot psa
+        join {{ source('dwhpublic', 'data')}} d
+            on
+                d.data>=psa.dt_dbt_valid_from
+                and d.data<coalesce(psa.dbt_valid_to,'99991231')
+    where and psa.rn=1
+	    and psa.successor_contract_id is null
+)
 select d.data, dia_setmana, d.es_primer_dia_mes, d.es_ultim_dia_mes, d.es_primer_dia_trimestre, d.es_ultim_dia_trimestre, d.es_primer_dia_any, d.es_ultim_dia_any
 	, i.id_instance, i.instance_name, i.instance_create_date
 	, co.id_coordinator, co.coordinator_name, co.coordinator_legal_form, co.coordinator_create_date
@@ -57,18 +80,11 @@ from {{ source('dwhpublic', 'data')}} d
 	left join {{ref('inm_us_pagaments_proveidors')}} pp on d.data=pp.data and c.id_community=pp.id_community
 	left join {{ref('inm_convidades_comunitat')}} con on c.data=con.data and c.id_community=con.id_community
 	--left join {{ref('inm_pack_serveis_assignat')}} psa on c.data>psa.date_start and c.data<psa.date_end and c.id_community=psa.community_company_id
-	left join (
-	    select * from {{ref('scd_pack_serveis_snapshot')}}
-	    UNION ALL
-	    -- dades de gener-26 estàtiques
-	    select * from external_snapshots.scd_pack_serveis_snapshot_20260101_20261231
-	    )
-	    psa on
-	    c.data>=psa.dbt_valid_from
-	    and c.data<=coalesce(psa.dbt_valid_to,'99991231')
-	    and c.id_community=psa.community_company_id
-	    and psa.rn=1
-	    and psa.successor_contract_id is null
+	left join scd_pack_serveis_snapshot_data  psa
+	    on
+            c.data=psa.data
+            and c.id_community=psa.community_company_id
+            and psa.rn=1
 where d.data<=CURRENT_DATE
     {% if is_incremental() %}
         and d.data>=current_date-5
