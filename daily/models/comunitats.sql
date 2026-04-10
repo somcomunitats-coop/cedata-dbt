@@ -24,7 +24,7 @@ with scd_pack_serveis_snapshot as (
             on
                 d.data>=psa.dt_dbt_valid_from
                 and d.data<coalesce(psa.dbt_valid_to,'99991231')
-    where and psa.rn=1
+    where psa.rn=1
 	    and psa.successor_contract_id is null
 )
 select d.data, dia_setmana, d.es_primer_dia_mes, d.es_ultim_dia_mes, d.es_primer_dia_trimestre, d.es_ultim_dia_trimestre, d.es_primer_dia_any, d.es_ultim_dia_any
