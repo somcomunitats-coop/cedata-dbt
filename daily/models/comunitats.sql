@@ -22,7 +22,7 @@ with scd_pack_serveis_snapshot as (
     from scd_pack_serveis_snapshot psa
         join {{ source('dwhpublic', 'data')}} d
             on
-                d.data>=psa.dt_dbt_valid_from
+                d.data>=psa.dbt_valid_from
                 and d.data<coalesce(psa.dbt_valid_to,'99991231')
     where psa.rn=1
 	    and psa.successor_contract_id is null
