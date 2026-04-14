@@ -29,7 +29,7 @@ select d.data, cm.company_id as id_community, count(distinct rp.id) as socies
 , case when count(case when m.state='posted' and m.payment_state='paid' then 1 end)>0 then true else false end as posted_paid_payment
 from {{ source('dwhpublic', 'data')}} d
 left join {{ source('dwhpublic', 'odoo_cooperative_membership')}} cm on d.data between cm.effective_date and current_date
-left join {{ source('dwhpublic', 'odoo_res_partner')}} rp on rp.id = rel.partner_id and rp.active
+left join {{ source('dwhpublic', 'odoo_res_partner')}} rp on rp.id = cm.partner_id and rp.active
 left join (
     select  m.partner_id, d.data, m.state, m.payment_state, c.id as company_id
     from {{ source('dwhpublic', 'data')}} d
